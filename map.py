@@ -4,6 +4,7 @@ from enum import Enum, unique
 import numpy as np
 import matplotlib.pyplot as plt
 import random
+import time
 
 from people import People
 
@@ -25,14 +26,17 @@ class Block(Enum):
 
 class Map(object):
     def __init__(self, n):
+        self.fig = plt.figure()
+        plt.ion()  # 打开交互模式
+        plt.show()
         self.map = np.zeros((n, n))
         # 添加边框
-        self.map[0, :] = 1
-        self.map[n-1, :] = 1
-        self.map[:, 0] = 1
-        self.map[:, n-1] = 1
+        self.map[0, :] = Block.WALL.value
+        self.map[n-1, :] = Block.WALL.value
+        self.map[:, 0] = Block.WALL.value
+        self.map[:, n-1] = Block.WALL.value
         # 添加大门
-        self.map[0, 1:3] = 3
+        self.map[0, 1:3] = Block.GATE.value
         # 人员列表
         self.mans = list()
 
@@ -44,7 +48,7 @@ class Map(object):
             if(self.map[y, x] == 0):
                 self.mans.append(People(x, y))
                 num = num - 1
-                self.map[y, x] = 2
+                self.map[y, x] = Block.MAN.value
 
     def get_env(self, size, man):
         ''' 获得一个人周围环境矩阵
@@ -55,7 +59,6 @@ class Map(object):
              |        *        |
              |                 |
             4*-----------------*3
-            1 if 5>3 else 0
         '''
         max_x = self.map.shape[1]
         max_y = self.map.shape[0]
@@ -71,27 +74,37 @@ class Map(object):
 
         # x4 = man.x - size if man.x - size > 0 else 0
         # y4 = man.x + size if man.x + size < max_x else max_x
-
+        # print(((x1, y1), (x3, y3)))
         return self.map[y1:y3, x1:x3]
 
     def draw_map(self):
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
+        # 清除原有图像
+        self.fig.clf()
+        ax = self.fig.add_subplot(111)
         # interpolation: nearest
         # [具体参数选择]
         # [https://matplotlib.org/examples/images_contours_and_fields/interpolation_methods.html] 
-        im = ax.imshow(self.map, interpolation="nearest", cmap=plt.cm.rainbow)
+        ax.imshow(self.map, interpolation="nearest", cmap=plt.cm.rainbow)
         # shrink 图例表长度
-        plt.colorbar(im, shrink=1)
-        plt.show()
+        # plt.colorbar(im, shrink=1)
+        plt.draw()
+        plt.pause(0.001)
 
     def test(self):
         man = self.mans[0]
+        print((man.x, man.y))
         print(self.get_env(5, man))
 
 
 if __name__ == '__main__':
     m = Map(20)
     m.gen_people(10)
-    m.test()
-    # m.draw_map()
+    m.draw_map()
+    time.sleep(1)
+
+    m.map[0, 0] = 4
+    m.draw_map()
+
+    plt.ioff()
+    # 图形显示
+    plt.show()
