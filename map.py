@@ -1,27 +1,12 @@
 # coding:utf-8
 
-from enum import Enum, unique
 import numpy as np
 import matplotlib.pyplot as plt
 import random
 import time
 
 from people import People
-
-
-@unique
-class Block(Enum):
-    '''
-    枚举类, 方块,确定物体的类型
-    '''
-    EMPTY = 0            # 空白
-    WALL = 1             # 障碍物
-    MAN = 2              # 人
-    GATE = 3             # 门
-    DIRECTION_UP = 4     # 方向指示牌
-    DIRECTION_DOWN = 5   # 方向指示牌
-    DIRECTION_LEFT = 6   # 方向指示牌
-    DIRECTION_RIGHT = 7  # 方向指示牌
+from emun_def import Block
 
 
 class Map(object):
@@ -48,7 +33,7 @@ class Map(object):
             if(self.map[y, x] == 0):
                 self.mans.append(People(x, y))
                 num = num - 1
-                self.map[y, x] = Block.MAN.value
+                # self.map[y, x] = Block.MAN.value
 
     def get_env(self, size, man):
         ''' 获得一个人周围环境矩阵
@@ -74,13 +59,21 @@ class Map(object):
 
         # x4 = man.x - size if man.x - size > 0 else 0
         # y4 = man.x + size if man.x + size < max_x else max_x
-        # print(((x1, y1), (x3, y3)))
-        return self.map[y1:y3, x1:x3]
+        inner_x = size
+        inner_y = size
+        if(x1 == 0):
+            inner_x = man.x
+        if(y1 == 0):
+            inner_y = man.y
+        return self.map[y1:y3, x1:x3], inner_x, inner_y
 
     def draw_map(self):
         # 清除原有图像
         self.fig.clf()
         ax = self.fig.add_subplot(111)
+        # 绘制所有人
+        for man in self.mans:
+            self.map[man.y, man.x] = Block.MAN.value
         # interpolation: nearest
         # [具体参数选择]
         # [https://matplotlib.org/examples/images_contours_and_fields/interpolation_methods.html] 
@@ -91,15 +84,16 @@ class Map(object):
         plt.pause(0.001)
 
     def test(self):
-        man = self.mans[0]
-        print((man.x, man.y))
-        print(self.get_env(5, man))
+        for each in self.mans:
+            envs = self.get_env(5, each)
+            each.policy(envs[0], envs[1], envs[2])
 
 
 if __name__ == '__main__':
     m = Map(20)
     m.gen_people(10)
     m.draw_map()
+    m.test()
     time.sleep(1)
 
     m.map[0, 0] = 4
