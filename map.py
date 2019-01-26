@@ -6,14 +6,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from people import People
-from emun_def import Block, VISION_SIZE, GATE_AREA
+from emun_def import Block, VISION_SIZE, GATE_AREA, IS_SHOW
 
 
 class Map(object):
-    def __init__(self, n):
-        self.fig = plt.figure()
-        plt.ion()  # 打开交互模式
-        plt.show()
+    def __init__(self, n, gate):
+        if(IS_SHOW):
+            self.fig = plt.figure()
+            plt.ion()  # 打开交互模式
+            plt.show()
         self.map = np.zeros((n, n))
         # 添加边框
         self.map[0, :] = Block.WALL.value
@@ -21,8 +22,11 @@ class Map(object):
         self.map[:, 0] = Block.WALL.value
         self.map[:, n-1] = Block.WALL.value
         # 添加大门
-        self.map[0, 1:4] = Block.GATE.value
-        self.map[5:8, n-1] = Block.GATE.value
+        n_half = int(n/2)
+        g = int(gate/2)
+        start = n_half - g
+        stop = start + gate
+        self.map[0, start:stop] = Block.GATE.value
         # 人员列表
         self.mans = list()
 
@@ -72,7 +76,8 @@ class Map(object):
         findblock = np.where(self.map == Block.EMPTY.value)
         size = findblock[0].size
         self.gen_people(int(size*density))
-        print('地图面积: ' + str(size) + '地图初始人数:' + str(int(size*density)))
+        if(IS_SHOW):
+            print('地图面积: ' + str(size) + '地图初始人数:' + str(int(size*density)))
 
     def sort_all(self):
         res = np.where(self.map == Block.GATE.value)
@@ -113,7 +118,7 @@ class Map(object):
             inner_y = man.y
         return self.map[y1:y3, x1:x3], inner_x, inner_y
 
-    def everybody_move(self):
+    def everybody_move(self, is_pause):
         time = 0
         res = np.where(self.map == Block.GATE.value)
         gates = list(zip(res[0], res[1]))  # y, X
@@ -134,15 +139,20 @@ class Map(object):
                 man.policy(envs[0], envs[1], envs[2])
             self.sort_all()
             self.draw_map()  # 刷新地图
-            print("当前时间:" + str(time) + " 剩余人数: " + str(len(self.mans)))
-            # if(time % 10 == 0):
-            #     getin = input("继续?[Y/n]:")
-            #     if(getin == 'Y' or getin == 'y'):
-            #         continue
-            #     else:
-            #         break
+            if(IS_SHOW):
+                print("当前时间:" + str(time) + " 剩余人数: " + str(len(self.mans)))
+            if(is_pause):
+                if(time % 10 == 0):
+                    getin = input("继续?[Y/n]:")
+                    if(getin == 'Y' or getin == 'y'):
+                        continue
+                    else:
+                        break
+        return time
 
     def draw_map(self):
+        if(not IS_SHOW):
+            return
         # 清除原有图像
         self.fig.clf()
         ax = self.fig.add_subplot(111)
@@ -155,9 +165,6 @@ class Map(object):
         # plt.colorbar(im, shrink=1)
         plt.draw()
         plt.pause(0.001)
-
-    def test(self):
-        self.load_map('m0.csv')
 
 
 if __name__ == '__main__':
