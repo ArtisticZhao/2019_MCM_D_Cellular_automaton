@@ -1,6 +1,7 @@
 # coding:utf-8
 import random
 from math import sqrt
+import csv
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -24,6 +25,18 @@ class Map(object):
         self.map[5:8, n-1] = Block.GATE.value
         # 人员列表
         self.mans = list()
+
+    def load_map(self, path):
+        self.map = np.array([])
+        with open(path) as f:
+            f_csv = csv.reader(f)
+            header = next(f_csv)
+            header = list(map(int, header))
+            self.map = np.concatenate((self.map, header), axis=0)
+            for row in f_csv:
+                row = np.array(list(map(int, row)))
+                self.map = np.vstack((self.map, row))
+        print(self.map)
 
     def gen_people(self, num):
         res = np.where(self.map == Block.GATE.value)
@@ -128,13 +141,13 @@ class Map(object):
         plt.pause(0.001)
 
     def test(self):
-        for each in self.mans:
-            envs = self.get_env(5, each)
-            each.policy(envs[0], envs[1], envs[2])
+        self.load_map('m0.csv')
 
 
 if __name__ == '__main__':
     m = Map(20)
+    m.load_map('m0.csv')
+
     m.gen_people(80)
     m.draw_map()
     m.everybody_move()
