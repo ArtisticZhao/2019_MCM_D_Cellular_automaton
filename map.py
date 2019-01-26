@@ -114,7 +114,6 @@ class Map(object):
                     print("a man esc! Remain:" + str(len(self.mans)))
                     continue
                 envs = self.get_env(VISION_SIZE, man)
-
                 if(envs[0][envs[2], envs[1]] != Block.MAN.value):
                     print("算法错误, 未找到周围环境!")
                     print(envs[0])

@@ -18,91 +18,99 @@ class People(object):
         self.env = None
         self.distance_to_gate = distance
         self.current_direction = None
+        self.speed = 1
 
     def move(self, direction):
-        if(direction == Direction.UP):
-            self.current_direction = Direction.UP
-            if(self.env[self.inner_y-1, self.inner_x] == Block.EMPTY.value):
-                self.y = self.y - 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                self.env[self.inner_y-1, self.inner_x] = Block.MAN.value
-            elif(self.env[self.inner_y-1, self.inner_x] == Block.GATE.value):
-                self.y = self.y - 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+        for _ in range(0, self.speed):
+            if(direction == Direction.UP):
+                self.current_direction = Direction.UP
+                if(self.env[self.inner_y-1, self.inner_x] == Block.EMPTY.value):
+                    self.y = self.y - 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y-1, self.inner_x] = Block.MAN.value
+                elif(self.env[self.inner_y-1, self.inner_x] == Block.GATE.value):
+                    self.y = self.y - 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    return
+            elif(direction == Direction.DOWN):
+                self.current_direction = Direction.DOWN
+                if(self.env[self.inner_y+1, self.inner_x] == Block.EMPTY.value):
+                    self.y = self.y + 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y+1, self.inner_x] = Block.MAN.value
+                elif(self.env[self.inner_y+1, self.inner_x] == Block.GATE.value):
+                    self.y = self.y + 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    return
+            elif(direction == Direction.LEFT):
+                self.current_direction = Direction.LEFT
+                if(self.env[self.inner_y, self.inner_x-1] == Block.EMPTY.value):
+                    self.x = self.x - 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x-1] = Block.MAN.value
+                elif(self.env[self.inner_y, self.inner_x-1] == Block.GATE.value):
+                    self.x = self.x - 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    return
+            elif(direction == Direction.RIGHT):
+                self.current_direction = Direction.RIGHT
+                if(self.env[self.inner_y, self.inner_x+1] == Block.EMPTY.value):
+                    self.x = self.x + 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x+1] = Block.MAN.value
+                elif(self.env[self.inner_y, self.inner_x+1] == Block.GATE.value):
+                    self.x = self.x + 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    return
 
-        elif(direction == Direction.DOWN):
-            self.current_direction = Direction.DOWN
-            if(self.env[self.inner_y+1, self.inner_x] == Block.EMPTY.value):
-                self.y = self.y + 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                self.env[self.inner_y+1, self.inner_x] = Block.MAN.value
-            elif(self.env[self.inner_y+1, self.inner_x] == Block.GATE.value):
-                self.y = self.y + 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-
-        elif(direction == Direction.LEFT):
-            self.current_direction = Direction.LEFT
-            if(self.env[self.inner_y, self.inner_x-1] == Block.EMPTY.value):
-                self.x = self.x - 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                self.env[self.inner_y, self.inner_x-1] = Block.MAN.value
-            elif(self.env[self.inner_y, self.inner_x-1] == Block.GATE.value):
-                self.x = self.x - 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-        elif(direction == Direction.RIGHT):
-            self.current_direction = Direction.RIGHT
-            if(self.env[self.inner_y, self.inner_x+1] == Block.EMPTY.value):
-                self.x = self.x + 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                self.env[self.inner_y, self.inner_x+1] = Block.MAN.value
-            elif(self.env[self.inner_y, self.inner_x+1] == Block.GATE.value):
-                self.x = self.x + 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-
-        elif(direction == Direction.UP_LEFT):
-            self.current_direction = Direction.UP_LEFT
-            if(self.env[self.inner_y-1, self.inner_x-1] == Block.EMPTY.value):
-                self.y = self.y - 1
-                self.x = self.x - 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                self.env[self.inner_y-1, self.inner_x-1] = Block.MAN.value
-            elif(self.env[self.inner_y-1, self.inner_x-1] == Block.GATE.value):
-                self.y = self.y - 1
-                self.x = self.x - 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-        elif(direction == Direction.UP_RIGHT):
-            self.current_direction = Direction.UP_RIGHT
-            if(self.env[self.inner_y-1, self.inner_x+1] == Block.EMPTY.value):
-                self.y = self.y - 1
-                self.x = self.x + 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                self.env[self.inner_y-1, self.inner_x+1] = Block.MAN.value
-            elif(self.env[self.inner_y-1, self.inner_x+1] == Block.GATE.value):
-                self.y = self.y - 1
-                self.x = self.x + 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-        elif(direction == Direction.DOWN_LEFT):
-            self.current_direction = Direction.DOWN_LEFT
-            if(self.env[self.inner_y+1, self.inner_x-1] == Block.EMPTY.value):
-                self.y = self.y + 1
-                self.x = self.x - 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                self.env[self.inner_y+1, self.inner_x-1] = Block.MAN.value
-            elif(self.env[self.inner_y+1, self.inner_x-1] == Block.GATE.value):
-                self.y = self.y + 1
-                self.x = self.x - 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-        elif(direction == Direction.DOWN_RIGHT):
-            self.current_direction = Direction.DOWN_RIGHT
-            if(self.env[self.inner_y+1, self.inner_x+1] == Block.EMPTY.value):
-                self.y = self.y + 1
-                self.x = self.x + 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                self.env[self.inner_y+1, self.inner_x+1] = Block.MAN.value
-            elif(self.env[self.inner_y+1, self.inner_x+1] == Block.GATE.value):
-                self.y = self.y + 1
-                self.x = self.x + 1
-                self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+            elif(direction == Direction.UP_LEFT):
+                self.current_direction = Direction.UP_LEFT
+                if(self.env[self.inner_y-1, self.inner_x-1] == Block.EMPTY.value):
+                    self.y = self.y - 1
+                    self.x = self.x - 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y-1, self.inner_x-1] = Block.MAN.value
+                elif(self.env[self.inner_y-1, self.inner_x-1] == Block.GATE.value):
+                    self.y = self.y - 1
+                    self.x = self.x - 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    return
+            elif(direction == Direction.UP_RIGHT):
+                self.current_direction = Direction.UP_RIGHT
+                if(self.env[self.inner_y-1, self.inner_x+1] == Block.EMPTY.value):
+                    self.y = self.y - 1
+                    self.x = self.x + 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y-1, self.inner_x+1] = Block.MAN.value
+                elif(self.env[self.inner_y-1, self.inner_x+1] == Block.GATE.value):
+                    self.y = self.y - 1
+                    self.x = self.x + 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    return
+            elif(direction == Direction.DOWN_LEFT):
+                self.current_direction = Direction.DOWN_LEFT
+                if(self.env[self.inner_y+1, self.inner_x-1] == Block.EMPTY.value):
+                    self.y = self.y + 1
+                    self.x = self.x - 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y+1, self.inner_x-1] = Block.MAN.value
+                elif(self.env[self.inner_y+1, self.inner_x-1] == Block.GATE.value):
+                    self.y = self.y + 1
+                    self.x = self.x - 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    return
+            elif(direction == Direction.DOWN_RIGHT):
+                self.current_direction = Direction.DOWN_RIGHT
+                if(self.env[self.inner_y+1, self.inner_x+1] == Block.EMPTY.value):
+                    self.y = self.y + 1
+                    self.x = self.x + 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y+1, self.inner_x+1] = Block.MAN.value
+                elif(self.env[self.inner_y+1, self.inner_x+1] == Block.GATE.value):
+                    self.y = self.y + 1
+                    self.x = self.x + 1
+                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    return
 
     def policy(self, env_mat, inner_x, inner_y):
         self.env = env_mat
