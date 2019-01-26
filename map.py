@@ -120,8 +120,12 @@ class Map(object):
             self.sort_all()
             self.draw_map()  # 刷新地图
             print("当前时间:" + str(time))
-            if(time > 70):
-                break
+            if(time % 10 == 0):
+                getin = input("继续?[Y/n]:")
+                if(getin == 'Y' or getin == 'y'):
+                    continue
+                else:
+                    break
 
     def draw_map(self):
         # 清除原有图像
@@ -143,7 +147,7 @@ class Map(object):
 
 if __name__ == '__main__':
     m = Map(20)
-    m.load_map('l1.csv')
+    m.load_map('l0.csv')
 
     m.gen_people(5700)
     m.draw_map()
