@@ -1,12 +1,11 @@
 # coding:utf-8
-
+import random
+from math import sqrt
 import numpy as np
 import matplotlib.pyplot as plt
-import random
-import time
 
 from people import People
-from emun_def import Block
+from emun_def import Block, VISION_SIZE
 
 
 class Map(object):
@@ -22,18 +21,41 @@ class Map(object):
         self.map[:, n-1] = Block.WALL.value
         # 添加大门
         self.map[0, 1:3] = Block.GATE.value
+        self.map[5:7, n-1] = Block.GATE.value
         # 人员列表
         self.mans = list()
 
     def gen_people(self, num):
+        res = np.where(self.map == Block.GATE.value)
+        gates = list(zip(res[0], res[1]))  # y, X
         #  随机放入游客在空白的地图中
         while(num != 0):
             x = random.randint(1, self.map.shape[0]-1)
             y = random.randint(1, self.map.shape[0]-1)
             if(self.map[y, x] == 0):
-                self.mans.append(People(x, y))
+                d = []
+                # 计算到门的距离
+                for gate in gates:
+                    d.append(sqrt((gate[0]-y)**2 + (gate[1]-x)**2))
+                # 计算出最小值
+                self.mans.append(People(x, y, min(d)))
+
                 num = num - 1
-                # self.map[y, x] = Block.MAN.value
+                self.map[y, x] = Block.MAN.value
+        # 应该按照距离排序
+        self.mans.sort(key=lambda x: x.distance_to_gate, reverse=False)
+
+    def sort_all(self):
+        res = np.where(self.map == Block.GATE.value)
+        gates = list(zip(res[0], res[1]))  # y, X
+        for man in self.mans:
+            d = []
+            # 计算到门的距离
+            for gate in gates:
+                d.append(sqrt((gate[0]-man.y)**2 + (gate[1]-man.x)**2))
+            man.distance_to_gate = min(d)
+        # 应该按照距离排序
+        self.mans.sort(key=lambda x: x.distance_to_gate, reverse=False)
 
     def get_env(self, size, man):
         ''' 获得一个人周围环境矩阵
@@ -67,16 +89,38 @@ class Map(object):
             inner_y = man.y
         return self.map[y1:y3, x1:x3], inner_x, inner_y
 
+    def everybody_move(self):
+        time = 0
+        res = np.where(self.map == Block.GATE.value)
+        gates = list(zip(res[0], res[1]))  # y, X
+        while(self.mans):
+            time = time + 1
+            for man in self.mans:
+                if (man.y, man.x) in gates:
+                    # 成功逃脱
+                    self.mans.remove(man)
+                    print("a man esc! Remain:" + str(len(self.mans)))
+                    continue
+                envs = self.get_env(VISION_SIZE, man)
+
+                if(envs[0][envs[2], envs[1]] != Block.MAN.value):
+                    print("算法错误, 未找到周围环境!")
+                    print(envs[0])
+                    print(envs[2], envs[1])
+
+                man.policy(envs[0], envs[1], envs[2])
+            # self.sort_all()
+            self.draw_map()  # 刷新地图
+            print("当前时间:" + str(time))
+
     def draw_map(self):
         # 清除原有图像
         self.fig.clf()
         ax = self.fig.add_subplot(111)
-        # 绘制所有人
-        for man in self.mans:
-            self.map[man.y, man.x] = Block.MAN.value
+
         # interpolation: nearest
         # [具体参数选择]
-        # [https://matplotlib.org/examples/images_contours_and_fields/interpolation_methods.html] 
+        # [https://matplotlib.org/examples/images_contours_and_fields/interpolation_methods.html]
         ax.imshow(self.map, interpolation="nearest", cmap=plt.cm.rainbow)
         # shrink 图例表长度
         # plt.colorbar(im, shrink=1)
@@ -91,13 +135,9 @@ class Map(object):
 
 if __name__ == '__main__':
     m = Map(20)
-    m.gen_people(10)
+    m.gen_people(100)
     m.draw_map()
-    m.test()
-    time.sleep(1)
-
-    m.map[0, 0] = 4
-    m.draw_map()
+    m.everybody_move()
 
     plt.ioff()
     # 图形显示
