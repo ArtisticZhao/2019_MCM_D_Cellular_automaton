@@ -123,76 +123,100 @@ class People(object):
         # 计算权值
         weights = list()
         # man go up
-        env_block = env_mat[0:inner_y, :]
-        weight = 0
-        find_block = np.where(env_block == Block.GATE.value)
-        weight = weight + find_block[0].size * Weight.GATE.value
-        find_block = np.where(env_block == Block.MAN.value)
-        weight = weight + find_block[0].size * Weight.MAN.value
-        weights.append(weight/2)
+        if(env_mat[inner_y-1, inner_x] != Block.WALL.value):
+            env_block = env_mat[0:inner_y, :]
+            weight = 0
+            find_block = np.where(env_block == Block.GATE.value)
+            weight = weight + find_block[0].size * Weight.GATE.value
+            find_block = np.where(env_block == Block.MAN.value)
+            weight = weight + find_block[0].size * Weight.MAN.value
+            weights.append(weight/2)
+        else:
+            weights.append(0)
 
         # man go Down
-        env_block = env_mat[inner_y+1:, :]
-        weight = 0
-        find_block = np.where(env_block == Block.GATE.value)
-        weight = weight + find_block[0].size * Weight.GATE.value
-        find_block = np.where(env_block == Block.MAN.value)
-        weight = weight + find_block[0].size * Weight.MAN.value
-        weights.append(weight/2)
+        if(env_mat[inner_y+1, inner_x] != Block.WALL.value):
+            env_block = env_mat[inner_y+1:, :]
+            weight = 0
+            find_block = np.where(env_block == Block.GATE.value)
+            weight = weight + find_block[0].size * Weight.GATE.value
+            find_block = np.where(env_block == Block.MAN.value)
+            weight = weight + find_block[0].size * Weight.MAN.value
+            weights.append(weight/2)
+        else:
+            weights.append(0)
 
         # man go Left
-        env_block = env_mat[:, 0:inner_x]
-        weight = 0
-        find_block = np.where(env_block == Block.GATE.value)
-        weight = weight + find_block[0].size * Weight.GATE.value
-        find_block = np.where(env_block == Block.MAN.value)
-        weight = weight + find_block[0].size * Weight.MAN.value
-        weights.append(weight/2)
+        if(env_mat[inner_y, inner_x-1] != Block.WALL.value):
+            env_block = env_mat[:, 0:inner_x]
+            weight = 0
+            find_block = np.where(env_block == Block.GATE.value)
+            weight = weight + find_block[0].size * Weight.GATE.value
+            find_block = np.where(env_block == Block.MAN.value)
+            weight = weight + find_block[0].size * Weight.MAN.value
+            weights.append(weight/2)
+        else:
+            weights.append(0)
 
         # man go Right
-        env_block = env_mat[:, inner_x+1:]
-        weight = 0
-        find_block = np.where(env_block == Block.GATE.value)
-        weight = weight + find_block[0].size * Weight.GATE.value
-        find_block = np.where(env_block == Block.MAN.value)
-        weight = weight + find_block[0].size * Weight.MAN.value
-        weights.append(weight/2)
+        if(env_mat[inner_y, inner_x+1] != Block.WALL.value):
+            env_block = env_mat[:, inner_x+1:]
+            weight = 0
+            find_block = np.where(env_block == Block.GATE.value)
+            weight = weight + find_block[0].size * Weight.GATE.value
+            find_block = np.where(env_block == Block.MAN.value)
+            weight = weight + find_block[0].size * Weight.MAN.value
+            weights.append(weight/2)
+        else:
+            weights.append(0)
 
         # man go UP_LEFT
-        env_block = env_mat[0:inner_y, 0:inner_x]
-        weight = 0
-        find_block = np.where(env_block == Block.GATE.value)
-        weight = weight + find_block[0].size * Weight.GATE.value
-        find_block = np.where(env_block == Block.MAN.value)
-        weight = weight + find_block[0].size * Weight.MAN.value
-        weights.append(weight)
+        if(env_mat[inner_y-1, inner_x-1] != Block.WALL.value):
+            env_block = env_mat[0:inner_y, 0:inner_x]
+            weight = 0
+            find_block = np.where(env_block == Block.GATE.value)
+            weight = weight + find_block[0].size * Weight.GATE.value
+            find_block = np.where(env_block == Block.MAN.value)
+            weight = weight + find_block[0].size * Weight.MAN.value
+            weights.append(weight)
+        else:
+            weights.append(0)
 
         # man go UP_RIGHT
-        env_block = env_mat[0:inner_y, inner_x+1:]
-        weight = 0
-        find_block = np.where(env_block == Block.GATE.value)
-        weight = weight + find_block[0].size * Weight.GATE.value
-        find_block = np.where(env_block == Block.MAN.value)
-        weight = weight + find_block[0].size * Weight.MAN.value
-        weights.append(weight)
+        if(env_mat[inner_y-1, inner_x+1] != Block.WALL.value):
+            env_block = env_mat[0:inner_y, inner_x+1:]
+            weight = 0
+            find_block = np.where(env_block == Block.GATE.value)
+            weight = weight + find_block[0].size * Weight.GATE.value
+            find_block = np.where(env_block == Block.MAN.value)
+            weight = weight + find_block[0].size * Weight.MAN.value
+            weights.append(weight)
+        else:
+            weights.append(0)
 
         # man go DOWN_LEFT
-        env_block = env_mat[inner_y+1:, 0:inner_x]
-        weight = 0
-        find_block = np.where(env_block == Block.GATE.value)
-        weight = weight + find_block[0].size * Weight.GATE.value
-        find_block = np.where(env_block == Block.MAN.value)
-        weight = weight + find_block[0].size * Weight.MAN.value
-        weights.append(weight)
+        if(env_mat[inner_y+1, inner_x-1] != Block.WALL.value):
+            env_block = env_mat[inner_y+1:, 0:inner_x]
+            weight = 0
+            find_block = np.where(env_block == Block.GATE.value)
+            weight = weight + find_block[0].size * Weight.GATE.value
+            find_block = np.where(env_block == Block.MAN.value)
+            weight = weight + find_block[0].size * Weight.MAN.value
+            weights.append(weight)
+        else:
+            weights.append(0)
 
         # man go DOWN_RIGHT
-        env_block = env_mat[inner_y+1:, inner_x+1:]
-        weight = 0
-        find_block = np.where(env_block == Block.GATE.value)
-        weight = weight + find_block[0].size * Weight.GATE.value
-        find_block = np.where(env_block == Block.MAN.value)
-        weight = weight + find_block[0].size * Weight.MAN.value
-        weights.append(weight)
+        if(env_mat[inner_y+1, inner_x+1] != Block.WALL.value):
+            env_block = env_mat[inner_y+1:, inner_x+1:]
+            weight = 0
+            find_block = np.where(env_block == Block.GATE.value)
+            weight = weight + find_block[0].size * Weight.GATE.value
+            find_block = np.where(env_block == Block.MAN.value)
+            weight = weight + find_block[0].size * Weight.MAN.value
+            weights.append(weight)
+        else:
+            weights.append(0)
         # 权值计算完毕
         go_direction = weight_choice(weights)
         self.move(go_direction)
