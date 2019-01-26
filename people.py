@@ -19,15 +19,26 @@ class People(object):
         self.distance_to_gate = distance
         self.current_direction = None
         self.speed = 1
+        self.is_wisdom_man = False
 
     def move(self, direction):
+        ID = 0
+        # 判断是否为智慧的人
+        find_block = np.where(self.env == Block.GATE.value)
+        if(find_block[0].size != 0):
+            self.is_wisdom_man = True
+            ID = Block.WISDOM_MAN.value
+        else:
+            self.is_wisdom_man = False
+            ID = Block.MAN.value
+
         for _ in range(0, self.speed):
             if(direction == Direction.UP):
                 self.current_direction = Direction.UP
                 if(self.env[self.inner_y-1, self.inner_x] == Block.EMPTY.value):
                     self.y = self.y - 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                    self.env[self.inner_y-1, self.inner_x] = Block.MAN.value
+                    self.env[self.inner_y-1, self.inner_x] = ID
                 elif(self.env[self.inner_y-1, self.inner_x] == Block.GATE.value):
                     self.y = self.y - 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
@@ -37,7 +48,7 @@ class People(object):
                 if(self.env[self.inner_y+1, self.inner_x] == Block.EMPTY.value):
                     self.y = self.y + 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                    self.env[self.inner_y+1, self.inner_x] = Block.MAN.value
+                    self.env[self.inner_y+1, self.inner_x] = ID
                 elif(self.env[self.inner_y+1, self.inner_x] == Block.GATE.value):
                     self.y = self.y + 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
@@ -47,7 +58,7 @@ class People(object):
                 if(self.env[self.inner_y, self.inner_x-1] == Block.EMPTY.value):
                     self.x = self.x - 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                    self.env[self.inner_y, self.inner_x-1] = Block.MAN.value
+                    self.env[self.inner_y, self.inner_x-1] = ID
                 elif(self.env[self.inner_y, self.inner_x-1] == Block.GATE.value):
                     self.x = self.x - 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
@@ -57,7 +68,7 @@ class People(object):
                 if(self.env[self.inner_y, self.inner_x+1] == Block.EMPTY.value):
                     self.x = self.x + 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                    self.env[self.inner_y, self.inner_x+1] = Block.MAN.value
+                    self.env[self.inner_y, self.inner_x+1] = ID
                 elif(self.env[self.inner_y, self.inner_x+1] == Block.GATE.value):
                     self.x = self.x + 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
@@ -69,7 +80,7 @@ class People(object):
                     self.y = self.y - 1
                     self.x = self.x - 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                    self.env[self.inner_y-1, self.inner_x-1] = Block.MAN.value
+                    self.env[self.inner_y-1, self.inner_x-1] = ID
                 elif(self.env[self.inner_y-1, self.inner_x-1] == Block.GATE.value):
                     self.y = self.y - 1
                     self.x = self.x - 1
@@ -81,7 +92,7 @@ class People(object):
                     self.y = self.y - 1
                     self.x = self.x + 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                    self.env[self.inner_y-1, self.inner_x+1] = Block.MAN.value
+                    self.env[self.inner_y-1, self.inner_x+1] = ID
                 elif(self.env[self.inner_y-1, self.inner_x+1] == Block.GATE.value):
                     self.y = self.y - 1
                     self.x = self.x + 1
@@ -93,7 +104,7 @@ class People(object):
                     self.y = self.y + 1
                     self.x = self.x - 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                    self.env[self.inner_y+1, self.inner_x-1] = Block.MAN.value
+                    self.env[self.inner_y+1, self.inner_x-1] = ID
                 elif(self.env[self.inner_y+1, self.inner_x-1] == Block.GATE.value):
                     self.y = self.y + 1
                     self.x = self.x - 1
@@ -105,7 +116,7 @@ class People(object):
                     self.y = self.y + 1
                     self.x = self.x + 1
                     self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
-                    self.env[self.inner_y+1, self.inner_x+1] = Block.MAN.value
+                    self.env[self.inner_y+1, self.inner_x+1] = ID
                 elif(self.env[self.inner_y+1, self.inner_x+1] == Block.GATE.value):
                     self.y = self.y + 1
                     self.x = self.x + 1
@@ -127,6 +138,9 @@ class People(object):
             weight = weight + find_block[0].size * Weight.GATE.value
             find_block = np.where(env_block == Block.MAN.value)
             weight = weight + find_block[0].size * Weight.MAN.value
+            if(not self.is_wisdom_man):
+                find_block = np.where(env_block == Block.WISDOM_MAN.value)  # 愚者跟随智慧的人
+                weight = weight + find_block[0].size * Weight.WISDOM_MAN.value
             weights.append(weight/2)
         else:
             weights.append(0)
@@ -140,6 +154,9 @@ class People(object):
             weight = weight + find_block[0].size * Weight.GATE.value
             find_block = np.where(env_block == Block.MAN.value)
             weight = weight + find_block[0].size * Weight.MAN.value
+            if(not self.is_wisdom_man):
+                find_block = np.where(env_block == Block.WISDOM_MAN.value)  # 愚者跟随智慧的人
+                weight = weight + find_block[0].size * Weight.WISDOM_MAN.value
             weights.append(weight/2)
         else:
             weights.append(0)
@@ -153,6 +170,9 @@ class People(object):
             weight = weight + find_block[0].size * Weight.GATE.value
             find_block = np.where(env_block == Block.MAN.value)
             weight = weight + find_block[0].size * Weight.MAN.value
+            if(not self.is_wisdom_man):
+                find_block = np.where(env_block == Block.WISDOM_MAN.value)  # 愚者跟随智慧的人
+                weight = weight + find_block[0].size * Weight.WISDOM_MAN.value
             weights.append(weight/2)
         else:
             weights.append(0)
@@ -166,6 +186,9 @@ class People(object):
             weight = weight + find_block[0].size * Weight.GATE.value
             find_block = np.where(env_block == Block.MAN.value)
             weight = weight + find_block[0].size * Weight.MAN.value
+            if(not self.is_wisdom_man):
+                find_block = np.where(env_block == Block.WISDOM_MAN.value)  # 愚者跟随智慧的人
+                weight = weight + find_block[0].size * Weight.WISDOM_MAN.value
             weights.append(weight/2)
         else:
             weights.append(0)
@@ -179,6 +202,9 @@ class People(object):
             weight = weight + find_block[0].size * Weight.GATE.value
             find_block = np.where(env_block == Block.MAN.value)
             weight = weight + find_block[0].size * Weight.MAN.value
+            if(not self.is_wisdom_man):
+                find_block = np.where(env_block == Block.WISDOM_MAN.value)  # 愚者跟随智慧的人
+                weight = weight + find_block[0].size * Weight.WISDOM_MAN.value
             weights.append(weight)
         else:
             weights.append(0)
@@ -192,6 +218,9 @@ class People(object):
             weight = weight + find_block[0].size * Weight.GATE.value
             find_block = np.where(env_block == Block.MAN.value)
             weight = weight + find_block[0].size * Weight.MAN.value
+            if(not self.is_wisdom_man):
+                find_block = np.where(env_block == Block.WISDOM_MAN.value)  # 愚者跟随智慧的人
+                weight = weight + find_block[0].size * Weight.WISDOM_MAN.value
             weights.append(weight)
         else:
             weights.append(0)
@@ -205,6 +234,9 @@ class People(object):
             weight = weight + find_block[0].size * Weight.GATE.value
             find_block = np.where(env_block == Block.MAN.value)
             weight = weight + find_block[0].size * Weight.MAN.value
+            if(not self.is_wisdom_man):
+                find_block = np.where(env_block == Block.WISDOM_MAN.value)  # 愚者跟随智慧的人
+                weight = weight + find_block[0].size * Weight.WISDOM_MAN.value
             weights.append(weight)
         else:
             weights.append(0)
@@ -218,6 +250,9 @@ class People(object):
             weight = weight + find_block[0].size * Weight.GATE.value
             find_block = np.where(env_block == Block.MAN.value)
             weight = weight + find_block[0].size * Weight.MAN.value
+            if(not self.is_wisdom_man):
+                find_block = np.where(env_block == Block.WISDOM_MAN.value)  # 愚者跟随智慧的人
+                weight = weight + find_block[0].size * Weight.WISDOM_MAN.value
             weights.append(weight)
         else:
             weights.append(0)

@@ -2,7 +2,7 @@
 
 from enum import Enum, unique
 
-VISION_SIZE = 10
+VISION_SIZE = 7
 
 
 @unique
@@ -10,14 +10,15 @@ class Block(Enum):
     '''
     枚举类, 方块,确定物体的类型
     '''
-    EMPTY = 0            # 空白
-    WALL = 1             # 障碍物
-    MAN = 2              # 人
-    GATE = 3             # 门
-    DIRECTION_UP = 4     # 方向指示牌
-    DIRECTION_DOWN = 5   # 方向指示牌
-    DIRECTION_LEFT = 6   # 方向指示牌
-    DIRECTION_RIGHT = 7  # 方向指示牌
+    EMPTY = 0             # 空白
+    WALL = 10             # 障碍物
+    MAN = 20              # 人
+    WISDOM_MAN = 25       # 真-智叟
+    GATE = 30             # 门
+    DIRECTION_UP = 40     # 方向指示牌
+    DIRECTION_DOWN = 50   # 方向指示牌
+    DIRECTION_LEFT = 60   # 方向指示牌
+    DIRECTION_RIGHT = 70  # 方向指示牌
 
 
 @unique
@@ -39,6 +40,7 @@ class Weight(Enum):
     EMPTY = 0            # 空白
     WALL = -0.1             # 障碍物
     MAN = 1              # 人
+    WISDOM_MAN = 20
     GATE = 1000             # 门
     DIRECTION_UP = 10     # 方向指示牌
     DIRECTION_DOWN = 10   # 方向指示牌

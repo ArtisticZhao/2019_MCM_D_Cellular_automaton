@@ -55,6 +55,7 @@ class Map(object):
                 num = num - 1
                 self.map[y, x] = Block.MAN.value
         # 应该按照距离排序
+        print(self.map)
         self.mans.sort(key=lambda x: x.distance_to_gate, reverse=False)
 
     def sort_all(self):
@@ -114,7 +115,8 @@ class Map(object):
                     print("a man esc! Remain:" + str(len(self.mans)))
                     continue
                 envs = self.get_env(VISION_SIZE, man)
-                if(envs[0][envs[2], envs[1]] != Block.MAN.value):
+                if(envs[0][envs[2], envs[1]] != Block.MAN.value and
+                   envs[0][envs[2], envs[1]] != Block.WISDOM_MAN.value):
                     print("算法错误, 未找到周围环境!")
                     print(envs[0])
                     print(envs[2], envs[1])
@@ -123,6 +125,8 @@ class Map(object):
             self.sort_all()
             self.draw_map()  # 刷新地图
             print("当前时间:" + str(time))
+            if(time > 70):
+                break
 
     def draw_map(self):
         # 清除原有图像
