@@ -131,7 +131,8 @@ class People(object):
         # 计算权值
         weights = list()
         # man go up
-        if(env_mat[inner_y-1, inner_x] != Block.WALL.value):
+        if(env_mat[inner_y-1, inner_x] != Block.WALL.value and
+           env_mat[inner_y-1, inner_x] != Block.WISDOM_MAN.value):
             env_block = env_mat[0:inner_y, :]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
@@ -147,7 +148,8 @@ class People(object):
             is_hit_wall = True
 
         # man go Down
-        if(env_mat[inner_y+1, inner_x] != Block.WALL.value):
+        if(env_mat[inner_y+1, inner_x] != Block.WALL.value and
+           env_mat[inner_y+1, inner_x] != Block.WISDOM_MAN.value):
             env_block = env_mat[inner_y+1:, :]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
@@ -163,7 +165,8 @@ class People(object):
             is_hit_wall = True
 
         # man go Left
-        if(env_mat[inner_y, inner_x-1] != Block.WALL.value):
+        if(env_mat[inner_y, inner_x-1] != Block.WALL.value and
+           env_mat[inner_y, inner_x-1] != Block.WISDOM_MAN.value):
             env_block = env_mat[:, 0:inner_x]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
@@ -179,7 +182,8 @@ class People(object):
             is_hit_wall = True
 
         # man go Right
-        if(env_mat[inner_y, inner_x+1] != Block.WALL.value):
+        if(env_mat[inner_y, inner_x+1] != Block.WALL.value and
+           env_mat[inner_y, inner_x+1] != Block.WISDOM_MAN.value):
             env_block = env_mat[:, inner_x+1:]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
@@ -195,7 +199,8 @@ class People(object):
             is_hit_wall = True
 
         # man go UP_LEFT
-        if(env_mat[inner_y-1, inner_x-1] != Block.WALL.value):
+        if(env_mat[inner_y-1, inner_x-1] != Block.WALL.value and
+           env_mat[inner_y-1, inner_x-1] != Block.WISDOM_MAN.value):
             env_block = env_mat[0:inner_y, 0:inner_x]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
@@ -211,7 +216,8 @@ class People(object):
             is_hit_wall = True
 
         # man go UP_RIGHT
-        if(env_mat[inner_y-1, inner_x+1] != Block.WALL.value):
+        if(env_mat[inner_y-1, inner_x+1] != Block.WALL.value and
+           env_mat[inner_y-1, inner_x+1] != Block.WISDOM_MAN.value):
             env_block = env_mat[0:inner_y, inner_x+1:]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
@@ -227,7 +233,8 @@ class People(object):
             is_hit_wall = True
 
         # man go DOWN_LEFT
-        if(env_mat[inner_y+1, inner_x-1] != Block.WALL.value):
+        if(env_mat[inner_y+1, inner_x-1] != Block.WALL.value and
+           env_mat[inner_y+1, inner_x-1] != Block.WISDOM_MAN.value):
             env_block = env_mat[inner_y+1:, 0:inner_x]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
@@ -243,7 +250,8 @@ class People(object):
             is_hit_wall = True
 
         # man go DOWN_RIGHT
-        if(env_mat[inner_y+1, inner_x+1] != Block.WALL.value):
+        if(env_mat[inner_y+1, inner_x+1] != Block.WALL.value and
+           env_mat[inner_y+1, inner_x+1] != Block.WISDOM_MAN.value):
             env_block = env_mat[inner_y+1:, inner_x+1:]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
