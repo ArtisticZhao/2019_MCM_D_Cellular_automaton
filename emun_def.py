@@ -44,3 +44,4 @@ class Weight(Enum):
     DIRECTION_DOWN = 10   # 方向指示牌
     DIRECTION_LEFT = 10   # 方向指示牌
     DIRECTION_RIGHT = 10  # 方向指示牌
+    SAME_DIRECTION = 100

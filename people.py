@@ -36,9 +36,11 @@ class People(object):
         self.inner_y = None
         self.env = None
         self.distance_to_gate = distance
+        self.current_direction = None
 
     def move(self, direction):
         if(direction == Direction.UP):
+            self.current_direction = Direction.UP
             if(self.env[self.inner_y-1, self.inner_x] == Block.EMPTY.value):
                 self.y = self.y - 1
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
@@ -48,6 +50,7 @@ class People(object):
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
 
         elif(direction == Direction.DOWN):
+            self.current_direction = Direction.DOWN
             if(self.env[self.inner_y+1, self.inner_x] == Block.EMPTY.value):
                 self.y = self.y + 1
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
@@ -57,6 +60,7 @@ class People(object):
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
 
         elif(direction == Direction.LEFT):
+            self.current_direction = Direction.LEFT
             if(self.env[self.inner_y, self.inner_x-1] == Block.EMPTY.value):
                 self.x = self.x - 1
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
@@ -65,6 +69,7 @@ class People(object):
                 self.x = self.x - 1
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
         elif(direction == Direction.RIGHT):
+            self.current_direction = Direction.RIGHT
             if(self.env[self.inner_y, self.inner_x+1] == Block.EMPTY.value):
                 self.x = self.x + 1
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
@@ -74,6 +79,7 @@ class People(object):
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
 
         elif(direction == Direction.UP_LEFT):
+            self.current_direction = Direction.UP_LEFT
             if(self.env[self.inner_y-1, self.inner_x-1] == Block.EMPTY.value):
                 self.y = self.y - 1
                 self.x = self.x - 1
@@ -84,6 +90,7 @@ class People(object):
                 self.x = self.x - 1
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
         elif(direction == Direction.UP_RIGHT):
+            self.current_direction = Direction.UP_RIGHT
             if(self.env[self.inner_y-1, self.inner_x+1] == Block.EMPTY.value):
                 self.y = self.y - 1
                 self.x = self.x + 1
@@ -94,6 +101,7 @@ class People(object):
                 self.x = self.x + 1
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
         elif(direction == Direction.DOWN_LEFT):
+            self.current_direction = Direction.DOWN_LEFT
             if(self.env[self.inner_y+1, self.inner_x-1] == Block.EMPTY.value):
                 self.y = self.y + 1
                 self.x = self.x - 1
@@ -104,6 +112,7 @@ class People(object):
                 self.x = self.x - 1
                 self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
         elif(direction == Direction.DOWN_RIGHT):
+            self.current_direction = Direction.DOWN_RIGHT
             if(self.env[self.inner_y+1, self.inner_x+1] == Block.EMPTY.value):
                 self.y = self.y + 1
                 self.x = self.x + 1
@@ -218,5 +227,8 @@ class People(object):
         else:
             weights.append(0)
         # 权值计算完毕
+        if(self.current_direction is not None):
+            index = d_list.index(self.current_direction)
+            weights[index] = weights[index] + Weight.SAME_DIRECTION.value
         go_direction = weight_choice(weights)
         self.move(go_direction)

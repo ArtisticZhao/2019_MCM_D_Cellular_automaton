@@ -20,8 +20,8 @@ class Map(object):
         self.map[:, 0] = Block.WALL.value
         self.map[:, n-1] = Block.WALL.value
         # 添加大门
-        self.map[0, 1:3] = Block.GATE.value
-        self.map[5:7, n-1] = Block.GATE.value
+        self.map[0, 1:4] = Block.GATE.value
+        self.map[5:8, n-1] = Block.GATE.value
         # 人员列表
         self.mans = list()
 
@@ -135,7 +135,7 @@ class Map(object):
 
 if __name__ == '__main__':
     m = Map(20)
-    m.gen_people(100)
+    m.gen_people(80)
     m.draw_map()
     m.everybody_move()
 
