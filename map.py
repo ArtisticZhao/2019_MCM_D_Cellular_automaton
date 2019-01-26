@@ -109,7 +109,7 @@ class Map(object):
                     print(envs[2], envs[1])
 
                 man.policy(envs[0], envs[1], envs[2])
-            # self.sort_all()
+            self.sort_all()
             self.draw_map()  # 刷新地图
             print("当前时间:" + str(time))
 
