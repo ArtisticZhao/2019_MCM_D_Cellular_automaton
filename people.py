@@ -255,7 +255,7 @@ class People(object):
                 weight = weight + find_block[0].size * Weight.WISDOM_MAN.value
             weights.append(weight)
         else:
-            weights.append(0)
+            weights.append(0)  # 绝不撞人
             is_hit_wall = True
         # 权值计算完毕
         # 倾向于向同一个方向

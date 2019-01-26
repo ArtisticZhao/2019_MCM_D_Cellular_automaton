@@ -2,7 +2,7 @@
 
 from enum import Enum, unique
 
-VISION_SIZE = 7
+VISION_SIZE = 20
 
 
 @unique

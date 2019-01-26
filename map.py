@@ -86,14 +86,9 @@ class Map(object):
         x1 = man.x - size if man.x - size > 0 else 0
         y1 = man.y - size if man.y - size > 0 else 0
 
-        # x2 = man.x + size if man.x + size < max_x else max_x
-        # y2 = man.y - size if man.y - size > 0 else 0
-
         x3 = man.x + size if man.x + size < max_x else max_x
         y3 = man.y + size if man.y + size < max_y else max_y
 
-        # x4 = man.x - size if man.x - size > 0 else 0
-        # y4 = man.x + size if man.x + size < max_x else max_x
         inner_x = size
         inner_y = size
         if(x1 == 0):
@@ -148,9 +143,9 @@ class Map(object):
 
 if __name__ == '__main__':
     m = Map(20)
-    m.load_map('m1.csv')
+    m.load_map('l1.csv')
 
-    m.gen_people(180)
+    m.gen_people(5700)
     m.draw_map()
     m.everybody_move()
 
