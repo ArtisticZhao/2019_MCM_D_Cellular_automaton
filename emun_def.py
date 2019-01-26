@@ -3,6 +3,7 @@
 from enum import Enum, unique
 
 VISION_SIZE = 20
+GATE_AREA = 20  # 请等于上一个值
 
 
 @unique
@@ -11,6 +12,7 @@ class Block(Enum):
     枚举类, 方块,确定物体的类型
     '''
     EMPTY = 0             # 空白
+    EMPTY_NEAR_GATE = 5   # 人们更乐于趋向的位置
     WALL = 10             # 障碍物
     MAN = 20              # 人
     WISDOM_MAN = 21       # 真-智叟

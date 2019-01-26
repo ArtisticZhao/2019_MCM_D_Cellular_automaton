@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from people import People
-from emun_def import Block, VISION_SIZE
+from emun_def import Block, VISION_SIZE, GATE_AREA
 
 
 class Map(object):
@@ -37,6 +37,16 @@ class Map(object):
                 row = np.array(list(map(int, row)))
                 self.map = np.vstack((self.map, row))
 
+    def check_map(self):
+        # 用于把门周围的地面变成人们更趋近的区域
+        res = np.where(self.map == Block.GATE.value)
+        gates = list(zip(res[0], res[1]))  # y, X
+        for gate in gates:
+            man_in_gate = People(gate[1], gate[0], 0)
+            envs = self.get_env(GATE_AREA, man_in_gate)
+            envs[0][envs[0] == 0] = Block.EMPTY_NEAR_GATE.value
+        self.draw_map()
+
     def gen_people(self, num):
         res = np.where(self.map == Block.GATE.value)
         gates = list(zip(res[0], res[1]))  # y, X
@@ -44,7 +54,8 @@ class Map(object):
         while(num != 0):
             x = random.randint(1, self.map.shape[1]-1)
             y = random.randint(1, self.map.shape[0]-1)
-            if(self.map[y, x] == Block.EMPTY.value):
+            if(self.map[y, x] == Block.EMPTY.value or
+               self.map[y, x] == Block.EMPTY_NEAR_GATE.value):
                 d = []
                 # 计算到门的距离
                 for gate in gates:

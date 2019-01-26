@@ -23,104 +23,119 @@ class People(object):
 
     def move(self, direction):
         ID = 0
+        GOUND = Block.EMPTY.value
         # 判断是否为智慧的人
         find_block = np.where(self.env == Block.GATE.value)
         if(find_block[0].size != 0):
             self.is_wisdom_man = True
             ID = Block.WISDOM_MAN.value
+            GOUND = Block.EMPTY_NEAR_GATE.value
         else:
             self.is_wisdom_man = False
             ID = Block.MAN.value
+            GOUND = Block.EMPTY.value
 
         for _ in range(0, self.speed):
             if(direction == Direction.UP):
                 self.current_direction = Direction.UP
-                if(self.env[self.inner_y-1, self.inner_x] == Block.EMPTY.value):
+                if(self.env[self.inner_y-1, self.inner_x] == Block.EMPTY.value or
+                   self.env[self.inner_y-1, self.inner_x] == Block.EMPTY_NEAR_GATE.value):
                     self.y = self.y - 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     self.env[self.inner_y-1, self.inner_x] = ID
                 elif(self.env[self.inner_y-1, self.inner_x] == Block.GATE.value):
                     self.y = self.y - 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     return
             elif(direction == Direction.DOWN):
                 self.current_direction = Direction.DOWN
-                if(self.env[self.inner_y+1, self.inner_x] == Block.EMPTY.value):
+                if(self.env[self.inner_y+1, self.inner_x] == Block.EMPTY.value or
+                   self.env[self.inner_y+1, self.inner_x] == Block.EMPTY_NEAR_GATE.value):
                     self.y = self.y + 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     self.env[self.inner_y+1, self.inner_x] = ID
                 elif(self.env[self.inner_y+1, self.inner_x] == Block.GATE.value):
                     self.y = self.y + 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     return
             elif(direction == Direction.LEFT):
                 self.current_direction = Direction.LEFT
-                if(self.env[self.inner_y, self.inner_x-1] == Block.EMPTY.value):
+                if(self.env[self.inner_y, self.inner_x-1] == Block.EMPTY.value or
+                   self.env[self.inner_y, self.inner_x-1] == Block.EMPTY_NEAR_GATE.value):
                     self.x = self.x - 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     self.env[self.inner_y, self.inner_x-1] = ID
                 elif(self.env[self.inner_y, self.inner_x-1] == Block.GATE.value):
                     self.x = self.x - 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     return
             elif(direction == Direction.RIGHT):
                 self.current_direction = Direction.RIGHT
-                if(self.env[self.inner_y, self.inner_x+1] == Block.EMPTY.value):
+                if(self.env[self.inner_y, self.inner_x+1] == Block.EMPTY.value or
+                   self.env[self.inner_y, self.inner_x+1] == Block.EMPTY_NEAR_GATE.value):
                     self.x = self.x + 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     self.env[self.inner_y, self.inner_x+1] = ID
                 elif(self.env[self.inner_y, self.inner_x+1] == Block.GATE.value):
                     self.x = self.x + 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     return
 
             elif(direction == Direction.UP_LEFT):
                 self.current_direction = Direction.UP_LEFT
-                if(self.env[self.inner_y-1, self.inner_x-1] == Block.EMPTY.value):
+                if(self.env[self.inner_y-1, self.inner_x-1] == Block.EMPTY.value or
+                   self.env[self.inner_y-1, self.inner_x-1] == Block.EMPTY_NEAR_GATE.value
+                   ):
                     self.y = self.y - 1
                     self.x = self.x - 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     self.env[self.inner_y-1, self.inner_x-1] = ID
                 elif(self.env[self.inner_y-1, self.inner_x-1] == Block.GATE.value):
                     self.y = self.y - 1
                     self.x = self.x - 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     return
             elif(direction == Direction.UP_RIGHT):
                 self.current_direction = Direction.UP_RIGHT
-                if(self.env[self.inner_y-1, self.inner_x+1] == Block.EMPTY.value):
+                if(self.env[self.inner_y-1, self.inner_x+1] == Block.EMPTY.value or
+                   self.env[self.inner_y-1, self.inner_x+1] == Block.EMPTY_NEAR_GATE.value
+                   ):
                     self.y = self.y - 1
                     self.x = self.x + 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     self.env[self.inner_y-1, self.inner_x+1] = ID
                 elif(self.env[self.inner_y-1, self.inner_x+1] == Block.GATE.value):
                     self.y = self.y - 1
                     self.x = self.x + 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     return
             elif(direction == Direction.DOWN_LEFT):
                 self.current_direction = Direction.DOWN_LEFT
-                if(self.env[self.inner_y+1, self.inner_x-1] == Block.EMPTY.value):
+                if(self.env[self.inner_y+1, self.inner_x-1] == Block.EMPTY.value or
+                   self.env[self.inner_y+1, self.inner_x-1] == Block.EMPTY_NEAR_GATE.value
+                   ):
                     self.y = self.y + 1
                     self.x = self.x - 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     self.env[self.inner_y+1, self.inner_x-1] = ID
                 elif(self.env[self.inner_y+1, self.inner_x-1] == Block.GATE.value):
                     self.y = self.y + 1
                     self.x = self.x - 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     return
             elif(direction == Direction.DOWN_RIGHT):
                 self.current_direction = Direction.DOWN_RIGHT
-                if(self.env[self.inner_y+1, self.inner_x+1] == Block.EMPTY.value):
+                if(self.env[self.inner_y+1, self.inner_x+1] == Block.EMPTY.value or
+                   self.env[self.inner_y+1, self.inner_x+1] == Block.EMPTY_NEAR_GATE.value
+                   ):
                     self.y = self.y + 1
                     self.x = self.x + 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     self.env[self.inner_y+1, self.inner_x+1] = ID
                 elif(self.env[self.inner_y+1, self.inner_x+1] == Block.GATE.value):
                     self.y = self.y + 1
                     self.x = self.x + 1
-                    self.env[self.inner_y, self.inner_x] = Block.EMPTY.value
+                    self.env[self.inner_y, self.inner_x] = GOUND
                     return
 
     def policy(self, env_mat, inner_x, inner_y):
