@@ -14,7 +14,6 @@ def weight_choice(weight):
     sum_weight = int(sum(weight))
     if(sum_weight == 0):
         # 权重等于0 随机产生一个方向
-        print("weight sum is 0!")
         return d_list[random.randint(0, len(d_list)-1)]
     t = random.randint(0, sum_weight - 1)
     for i, val in enumerate(weight):

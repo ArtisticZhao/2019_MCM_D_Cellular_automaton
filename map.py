@@ -55,8 +55,13 @@ class Map(object):
                 num = num - 1
                 self.map[y, x] = Block.MAN.value
         # 应该按照距离排序
-        print(self.map)
         self.mans.sort(key=lambda x: x.distance_to_gate, reverse=False)
+
+    def gen_people_by_density(self, density):
+        findblock = np.where(self.map == Block.EMPTY.value)
+        size = findblock[0].size
+        self.gen_people(int(size*density))
+        print('地图初始人数:' + str(int(size*density)))
 
     def sort_all(self):
         res = np.where(self.map == Block.GATE.value)
@@ -107,7 +112,6 @@ class Map(object):
                 if (man.y, man.x) in gates:
                     # 成功逃脱
                     self.mans.remove(man)
-                    print("a man esc! Remain:" + str(len(self.mans)))
                     continue
                 envs = self.get_env(VISION_SIZE, man)
                 if(envs[0][envs[2], envs[1]] != Block.MAN.value and
@@ -119,7 +123,7 @@ class Map(object):
                 man.policy(envs[0], envs[1], envs[2])
             self.sort_all()
             self.draw_map()  # 刷新地图
-            print("当前时间:" + str(time))
+            print("当前时间:" + str(time) + " 剩余人数: " + str(len(self.mans)))
             if(time % 10 == 0):
                 getin = input("继续?[Y/n]:")
                 if(getin == 'Y' or getin == 'y'):
