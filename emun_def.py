@@ -12,7 +12,7 @@ class Block(Enum):
     枚举类, 方块,确定物体的类型
     '''
     EMPTY = 0             # 空白
-    EMPTY_NEAR_GATE = 5   # 人们更乐于趋向的位置
+    EMPTY_NEAR_GATE = 1   # 人们更乐于趋向的位置
     WALL = 10             # 障碍物
     MAN = 20              # 人
     WISDOM_MAN = 21       # 真-智叟
@@ -43,7 +43,8 @@ class Weight(Enum):
     WALL = -0.1             # 障碍物
     MAN = 1              # 人
     WISDOM_MAN = 20
-    GATE = 1000             # 门
+    GATE = 1500             # 门
+    EMPTY_NEAR_GATE = 20    # 近门空白区域
     DIRECTION_UP = 10     # 方向指示牌
     DIRECTION_DOWN = 10   # 方向指示牌
     DIRECTION_LEFT = 10   # 方向指示牌

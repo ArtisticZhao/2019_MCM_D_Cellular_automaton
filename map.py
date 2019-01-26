@@ -72,7 +72,7 @@ class Map(object):
         findblock = np.where(self.map == Block.EMPTY.value)
         size = findblock[0].size
         self.gen_people(int(size*density))
-        print('地图初始人数:' + str(int(size*density)))
+        print('地图面积: ' + str(size) + '地图初始人数:' + str(int(size*density)))
 
     def sort_all(self):
         res = np.where(self.map == Block.GATE.value)
@@ -135,12 +135,12 @@ class Map(object):
             self.sort_all()
             self.draw_map()  # 刷新地图
             print("当前时间:" + str(time) + " 剩余人数: " + str(len(self.mans)))
-            if(time % 10 == 0):
-                getin = input("继续?[Y/n]:")
-                if(getin == 'Y' or getin == 'y'):
-                    continue
-                else:
-                    break
+            # if(time % 10 == 0):
+            #     getin = input("继续?[Y/n]:")
+            #     if(getin == 'Y' or getin == 'y'):
+            #         continue
+            #     else:
+            #         break
 
     def draw_map(self):
         # 清除原有图像
