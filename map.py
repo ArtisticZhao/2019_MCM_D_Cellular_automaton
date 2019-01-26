@@ -42,9 +42,9 @@ class Map(object):
         gates = list(zip(res[0], res[1]))  # y, X
         #  随机放入游客在空白的地图中
         while(num != 0):
-            x = random.randint(1, self.map.shape[0]-1)
+            x = random.randint(1, self.map.shape[1]-1)
             y = random.randint(1, self.map.shape[0]-1)
-            if(self.map[y, x] == 0):
+            if(self.map[y, x] == Block.EMPTY.value):
                 d = []
                 # 计算到门的距离
                 for gate in gates:
@@ -148,9 +148,9 @@ class Map(object):
 
 if __name__ == '__main__':
     m = Map(20)
-    m.load_map('m0.csv')
+    m.load_map('m1.csv')
 
-    m.gen_people(80)
+    m.gen_people(180)
     m.draw_map()
     m.everybody_move()
 

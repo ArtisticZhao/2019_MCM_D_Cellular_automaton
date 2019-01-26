@@ -13,7 +13,7 @@ class Block(Enum):
     EMPTY = 0             # 空白
     WALL = 10             # 障碍物
     MAN = 20              # 人
-    WISDOM_MAN = 25       # 真-智叟
+    WISDOM_MAN = 21       # 真-智叟
     GATE = 30             # 门
     DIRECTION_UP = 40     # 方向指示牌
     DIRECTION_DOWN = 50   # 方向指示牌
