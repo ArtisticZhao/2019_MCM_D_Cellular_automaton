@@ -36,7 +36,6 @@ class Map(object):
             for row in f_csv:
                 row = np.array(list(map(int, row)))
                 self.map = np.vstack((self.map, row))
-        print(self.map)
 
     def gen_people(self, num):
         res = np.where(self.map == Block.GATE.value)
