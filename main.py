@@ -52,7 +52,19 @@ def test_room_size():
         print(str(i) + " " + str(time))
 
 
+# def test_gate_pos():
+#     for i in range(-15, 15):
+#         m = Map(40, 5, i)
+#         m.draw_map()
+#         m.gen_people_by_density(0.2)
+#         m.check_map()
+#         m.draw_map()
+#         time = m.everybody_move(False)
+#         print(str(i) + " " + str(time))
+
+
 if __name__ == '__main__':
+    # test_gate_pos()
     run_manul('l1.csv', False)
     # test_door()
     # test_room_size()

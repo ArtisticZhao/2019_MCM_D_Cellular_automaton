@@ -30,6 +30,26 @@ class Map(object):
         # 人员列表
         self.mans = list()
 
+    # def __init__(self, n, gate, offset):
+    #     if(IS_SHOW):
+    #         self.fig = plt.figure()
+    #         plt.ion()  # 打开交互模式
+    #         plt.show()
+    #     self.map = np.zeros((n, n))
+    #     # 添加边框
+    #     self.map[0, :] = Block.WALL.value
+    #     self.map[n-1, :] = Block.WALL.value
+    #     self.map[:, 0] = Block.WALL.value
+    #     self.map[:, n-1] = Block.WALL.value
+    #     # 添加大门
+    #     n_half = int(n/2) + offset
+    #     g = int(gate/2)
+    #     start = n_half - g
+    #     stop = start + gate
+    #     self.map[0, start:stop] = Block.GATE.value
+    #     # 人员列表
+    #     self.mans = list()
+
     def load_map(self, path):
         self.map = np.array([])
         with open(path) as f:
