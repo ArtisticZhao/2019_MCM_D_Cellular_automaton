@@ -9,6 +9,7 @@ def run_manul(file_name, stop):
     m.gen_people_by_density(0.2)
     m.check_map()
     m.draw_map()
+    plt.savefig('0.png')
     # input(':')
     m.everybody_move(stop)
 
@@ -54,7 +55,7 @@ def test_room_size():
 
 if __name__ == '__main__':
     # test_gate_pos()
-    run_manul('maps/m0.csv', False)
+    run_manul('maps/m0.csv', True)
     # test_door()
     # test_room_size()
     # m = Map(20, 3)

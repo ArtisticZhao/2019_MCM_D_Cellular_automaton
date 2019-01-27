@@ -173,11 +173,7 @@ class Map(object):
                 break
             if(is_pause):
                 if(time % 20 == 0):
-                    getin = input("继续?[Y/n]:")
-                    if(getin == 'Y' or getin == 'y'):
-                        continue
-                    else:
-                        break
+                    plt.savefig(str(time) + ".png")  # 保存图片
         self.gate_log.show_log(self.map)
         return time
 
