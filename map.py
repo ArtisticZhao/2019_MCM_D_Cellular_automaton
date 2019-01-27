@@ -168,7 +168,7 @@ class Map(object):
                 print("当前时间:" + str(time + 5) + " 剩余人数: 0")
                 break
             if(is_pause):
-                if(time % 10 == 0):
+                if(time % 5 == 0):
                     getin = input("继续?[Y/n]:")
                     if(getin == 'Y' or getin == 'y'):
                         continue
