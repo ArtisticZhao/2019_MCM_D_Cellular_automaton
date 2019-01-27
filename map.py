@@ -168,7 +168,7 @@ class Map(object):
                 print("当前时间:" + str(time + 5) + " 剩余人数: 0")
                 break
             if(is_pause):
-                if(time % 5 == 0):
+                if(time % 20 == 0):
                     getin = input("继续?[Y/n]:")
                     if(getin == 'Y' or getin == 'y'):
                         continue
@@ -182,20 +182,19 @@ class Map(object):
         # 清除原有图像
         self.fig.clf()
         ax = self.fig.add_subplot(111)
-
-        # interpolation: nearest
-        # [具体参数选择]
-        # [https://matplotlib.org/examples/images_contours_and_fields/interpolation_methods.html]
         ax.imshow(self.map, interpolation="nearest", cmap=plt.cm.rainbow)
-        # shrink 图例表长度
-        # plt.colorbar(im, shrink=1)
         plt.draw()
         plt.pause(0.001)
 
 
+class Gate(object):
+    def __init__(self):
+        pass
+
+
 if __name__ == '__main__':
     m = Map(20)
-    m.load_map('l0.csv')
+    m.load_map('maps/l0.csv')
 
     m.gen_people(5700)
     m.draw_map()

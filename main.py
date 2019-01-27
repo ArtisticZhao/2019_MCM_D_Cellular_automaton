@@ -65,7 +65,7 @@ def test_room_size():
 
 if __name__ == '__main__':
     # test_gate_pos()
-    run_manul('d0.csv', True)
+    run_manul('maps/l0_2.csv', True)
     # test_door()
     # test_room_size()
     # m = Map(20, 3)
