@@ -159,7 +159,10 @@ class People(object):
                 weight = 0
                 # 倾向于走相同的方向
                 if(direc == self.current_direction):
-                    weight = weight + Weight.SAME_DIRECTION.value
+                    if(not self.is_wisdom_man):
+                        weight = weight + Weight.SAME_DIRECTION.value * 5
+                    else:
+                        weight = weight + Weight.SAME_DIRECTION.value
                 # 倾向于走向大门
                 find_block = np.where(env_block == Block.GATE.value)
                 weight = weight + find_block[0].size * Weight.GATE.value

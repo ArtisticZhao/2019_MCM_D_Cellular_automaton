@@ -45,10 +45,10 @@ class Weight(Enum):
     WALL = -0.1             # 障碍物
     MAN = 1              # 人
     WISDOM_MAN = 20
-    GATE = 1600             # 门
+    GATE = 2000             # 门
     EMPTY_NEAR_GATE = 20    # 近门空白区域
-    DIRECTION_UP = 900     # 方向指示牌
-    DIRECTION_DOWN = 900   # 方向指示牌
-    DIRECTION_LEFT = 900   # 方向指示牌
+    DIRECTION_UP = 1000     # 方向指示牌
+    DIRECTION_DOWN = 1000   # 方向指示牌
+    DIRECTION_LEFT = 1100   # 方向指示牌
     DIRECTION_RIGHT = 900  # 方向指示牌
-    SAME_DIRECTION = 1000
+    SAME_DIRECTION = 10000
