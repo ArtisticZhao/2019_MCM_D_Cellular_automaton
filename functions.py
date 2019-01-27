@@ -1,9 +1,13 @@
 import random
-from emun_def import Direction
+from emun_def import Direction, Block, Weight
 
 d_list = [Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT,
           Direction.UP_LEFT, Direction.UP_RIGHT, Direction.DOWN_LEFT,
           Direction.DOWN_RIGHT]
+b_direction = {Block.DIRECTION_UP: [Direction.UP, Weight.DIRECTION_UP],
+               Block.DIRECTION_DOWN: [Direction.DOWN, Weight.DIRECTION_DOWN],
+               Block.DIRECTION_LEFT: [Direction.LEFT, Weight.DIRECTION_LEFT],
+               Block.DIRECTION_RIGHT: [Direction.RIGHT, Weight.DIRECTION_RIGHT]}
 
 
 def weight_choice(weight):

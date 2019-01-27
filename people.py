@@ -3,7 +3,8 @@
 import numpy as np
 from emun_def import Direction, Block, Weight
 
-from functions import d_list, weight_choice, find_op_directions, is_in_corner
+from functions import (d_list, b_direction,
+                       weight_choice, find_op_directions, is_in_corner)
 
 
 class People(object):
@@ -145,6 +146,7 @@ class People(object):
         is_hit_wall_or_man = False
         # 计算权值----------------------------------------------------------------
         weights = list()
+        d_weights = [0, 0, 0, 0, 0, 0, 0, 0]  # 用于存储标志牌产生的权值
         for direc in d_list:
             # 绝不回头
             if self.current_direction is not None:
@@ -178,31 +180,22 @@ class People(object):
                     weights.append(weight/2)
                 else:
                     weights.append(weight)
+                # 在此处计算标识牌的权重, 这样只计算身前的标识牌
+                if not self.is_wisdom_man:
+                    for b_d in b_direction.keys():
+                        find_block = np.where(env_block == b_d.value)
+                        index = d_list.index(b_direction[b_d][0])
+                        d_weights[index] = (
+                            d_weights[index] +
+                            find_block[0].size * b_direction[b_d][1].value)
             else:
                 weights.append(0)
                 is_hit_wall_or_man = True
-        # 权值计算完毕----------------------------------------------------------------
-        # 愚者跟随指示牌
-        if(not self.is_wisdom_man):
-            index = d_list.index(Direction.UP)
-            find_block = np.where(env_mat == Block.DIRECTION_UP.value)
-            weights[index] = (weights[index] +
-                              find_block[0].size * Weight.DIRECTION_UP.value)
-            index = d_list.index(Direction.DOWN)
-            find_block = np.where(env_mat == Block.DIRECTION_DOWN.value)
-            weights[index] = (weights[index] +
-                              find_block[0].size * Weight.DIRECTION_DOWN.value)
-            index = d_list.index(Direction.LEFT)
-            find_block = np.where(env_mat == Block.DIRECTION_LEFT.value)
-            weights[index] = (weights[index] +
-                              find_block[0].size * Weight.DIRECTION_LEFT.value)
-            index = d_list.index(Direction.RIGHT)
-            find_block = np.where(env_mat == Block.DIRECTION_RIGHT.value)
-            weights[index] = (weights[index] +
-                              find_block[0].size * Weight.DIRECTION_RIGHT.value)
 
         # 根据概率产生方向
-        go_direction = weight_choice(weights)
+        w = np.array(weights) + np.array(d_weights)
+        w = list(w)
+        go_direction = weight_choice(w)
         self.move(go_direction)
 
     def see_direction(self, direction):

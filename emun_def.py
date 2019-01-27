@@ -2,7 +2,7 @@
 
 from enum import Enum, unique
 
-VISION_SIZE = 20
+VISION_SIZE = 15
 GATE_AREA = 20  # 请等于上一个值
 IS_SHOW = True
 # IS_SHOW = False
@@ -47,8 +47,8 @@ class Weight(Enum):
     WISDOM_MAN = 20
     GATE = 1600             # 门
     EMPTY_NEAR_GATE = 20    # 近门空白区域
-    DIRECTION_UP = 1000     # 方向指示牌
-    DIRECTION_DOWN = 1000   # 方向指示牌
-    DIRECTION_LEFT = 1000   # 方向指示牌
-    DIRECTION_RIGHT = 1000  # 方向指示牌
-    SAME_DIRECTION = 100
+    DIRECTION_UP = 900     # 方向指示牌
+    DIRECTION_DOWN = 900   # 方向指示牌
+    DIRECTION_LEFT = 900   # 方向指示牌
+    DIRECTION_RIGHT = 900  # 方向指示牌
+    SAME_DIRECTION = 1000
