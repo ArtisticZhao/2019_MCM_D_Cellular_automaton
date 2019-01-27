@@ -29,6 +29,7 @@ class Map(object):
         self.map[0, start:stop] = Block.GATE.value
         # 人员列表
         self.mans = list()
+        self.total_man = 0
 
     # def __init__(self, n, gate, offset):
     #     if(IS_SHOW):
@@ -72,6 +73,7 @@ class Map(object):
         self.draw_map()
 
     def gen_people(self, num):
+        self.total_man = num
         res = np.where(self.map == Block.GATE.value)
         gates = list(zip(res[0], res[1]))  # y, X
         #  随机放入游客在空白的地图中
@@ -161,6 +163,10 @@ class Map(object):
             self.draw_map()  # 刷新地图
             if(IS_SHOW):
                 print("当前时间:" + str(time) + " 剩余人数: " + str(len(self.mans)))
+            # 残忍的抛下1%的人
+            if(len(self.mans) < self.total_man * 0.01):
+                print("当前时间:" + str(time + 5) + " 剩余人数: 0")
+                break
             if(is_pause):
                 if(time % 10 == 0):
                     getin = input("继续?[Y/n]:")

@@ -3,7 +3,7 @@
 import numpy as np
 from emun_def import Direction, Block, Weight
 
-from functions import d_list, weight_choice, find_op
+from functions import d_list, weight_choice, find_op_directions, is_in_corner
 
 
 class People(object):
@@ -146,20 +146,38 @@ class People(object):
         # 计算权值----------------------------------------------------------------
         weights = list()
         for direc in d_list:
+            # 绝不回头
+            if self.current_direction is not None:
+                if direc in find_op_directions(self.current_direction):
+                    weights.append(0)
+                    continue
+            # 绝不撞向什么东西
             if self.is_not_hit_something(direc):
                 env_block = self.see_direction(direc)
                 weight = 0
+                # 倾向于走相同的方向
+                if(direc == self.current_direction):
+                    weight = weight + Weight.SAME_DIRECTION.value
+                # 倾向于走向大门
                 find_block = np.where(env_block == Block.GATE.value)
                 weight = weight + find_block[0].size * Weight.GATE.value
+                # 愚者乐于向往大门附近的地方
                 if(is_hit_wall_or_man or not self.is_wisdom_man):
                     find_block = np.where(env_block == Block.EMPTY_NEAR_GATE.value)
                     weight = weight + find_block[0].size * Weight.EMPTY_NEAR_GATE.value
+                # 从众心理
                 find_block = np.where(env_block == Block.MAN.value)
                 weight = weight + find_block[0].size * Weight.MAN.value
+                find_block = np.where(env_block == Block.WISDOM_MAN.value)
+                weight = weight + find_block[0].size * Weight.MAN.value
+                # 愚者跟随智慧的人
                 if(not self.is_wisdom_man):
-                    find_block = np.where(env_block == Block.WISDOM_MAN.value)  # 愚者跟随智慧的人
+                    find_block = np.where(env_block == Block.WISDOM_MAN.value)
                     weight = weight + find_block[0].size * Weight.WISDOM_MAN.value
-                weights.append(weight/2)
+                if(is_in_corner(direc)):
+                    weights.append(weight/2)
+                else:
+                    weights.append(weight)
             else:
                 weights.append(0)
                 is_hit_wall_or_man = True
@@ -182,14 +200,7 @@ class People(object):
             find_block = np.where(env_mat == Block.DIRECTION_RIGHT.value)
             weights[index] = (weights[index] +
                               find_block[0].size * Weight.DIRECTION_RIGHT.value)
-        # 倾向于向同一个方向
-        if(self.current_direction is not None and not is_hit_wall_or_man):
-            index = d_list.index(self.current_direction)
-            weights[index] = weights[index] + Weight.SAME_DIRECTION.value
-        # 绝不回头
-        if(self.current_direction is not None):
-            index = d_list.index(find_op(self.current_direction))
-            weights[index] = 0
+
         # 根据概率产生方向
         go_direction = weight_choice(weights)
         self.move(go_direction)
