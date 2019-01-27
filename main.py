@@ -3,14 +3,14 @@ from map import Map
 from matplotlib import pyplot as plt
 
 
-def run_manul(file_name):
+def run_manul(file_name, stop):
     m = Map(20, 3)
     m.load_map(file_name)
     m.gen_people_by_density(0.2)
     m.check_map()
     m.draw_map()
     # input(':')
-    m.everybody_move(True)
+    m.everybody_move(stop)
 
     plt.ioff()
     # 图形显示
@@ -53,7 +53,7 @@ def test_room_size():
 
 
 if __name__ == '__main__':
-    run_manul('l0.csv')
+    run_manul('l1.csv', False)
     # test_door()
     # test_room_size()
     # m = Map(20, 3)

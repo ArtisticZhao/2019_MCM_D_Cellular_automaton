@@ -47,8 +47,8 @@ class Weight(Enum):
     WISDOM_MAN = 20
     GATE = 1600             # 门
     EMPTY_NEAR_GATE = 20    # 近门空白区域
-    DIRECTION_UP = 10     # 方向指示牌
-    DIRECTION_DOWN = 10   # 方向指示牌
-    DIRECTION_LEFT = 10   # 方向指示牌
-    DIRECTION_RIGHT = 10  # 方向指示牌
-    SAME_DIRECTION = 10
+    DIRECTION_UP = 1000     # 方向指示牌
+    DIRECTION_DOWN = 1000   # 方向指示牌
+    DIRECTION_LEFT = 1000   # 方向指示牌
+    DIRECTION_RIGHT = 1000  # 方向指示牌
+    SAME_DIRECTION = 100

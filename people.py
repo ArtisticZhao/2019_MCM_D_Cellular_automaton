@@ -142,17 +142,22 @@ class People(object):
         self.env = env_mat
         self.inner_x = inner_x
         self.inner_y = inner_y
-        is_hit_wall_or_wisdom_man = False
-        # 计算权值
+        is_hit_wall_or_man = False
+        # 计算权值----------------------------------------------------------------
         weights = list()
         # man go up
         if(env_mat[inner_y-1, inner_x] != Block.WALL.value and
-           env_mat[inner_y-1, inner_x] != Block.WISDOM_MAN.value):
+           env_mat[inner_y-1, inner_x] != Block.DIRECTION_DOWN.value and
+           env_mat[inner_y-1, inner_x] != Block.DIRECTION_LEFT.value and
+           env_mat[inner_y-1, inner_x] != Block.DIRECTION_RIGHT.value and
+           env_mat[inner_y-1, inner_x] != Block.DIRECTION_UP.value and
+           env_mat[inner_y-1, inner_x] != Block.WISDOM_MAN.value and
+           env_mat[inner_y-1, inner_x] != Block.MAN.value):
             env_block = env_mat[0:inner_y, :]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
             weight = weight + find_block[0].size * Weight.GATE.value
-            if(is_hit_wall_or_wisdom_man or not self.is_wisdom_man):
+            if(is_hit_wall_or_man or not self.is_wisdom_man):
                 find_block = np.where(env_block == Block.EMPTY_NEAR_GATE.value)
                 weight = weight + find_block[0].size * Weight.EMPTY_NEAR_GATE.value
             find_block = np.where(env_block == Block.MAN.value)
@@ -163,16 +168,21 @@ class People(object):
             weights.append(weight/2)
         else:
             weights.append(0)
-            is_hit_wall_or_wisdom_man = True
+            is_hit_wall_or_man = True
 
         # man go Down
         if(env_mat[inner_y+1, inner_x] != Block.WALL.value and
-           env_mat[inner_y+1, inner_x] != Block.WISDOM_MAN.value):
+           env_mat[inner_y+1, inner_x] != Block.DIRECTION_DOWN.value and
+           env_mat[inner_y+1, inner_x] != Block.DIRECTION_LEFT.value and
+           env_mat[inner_y+1, inner_x] != Block.DIRECTION_RIGHT.value and
+           env_mat[inner_y+1, inner_x] != Block.DIRECTION_UP.value and
+           env_mat[inner_y+1, inner_x] != Block.WISDOM_MAN.value and
+           env_mat[inner_y+1, inner_x] != Block.MAN.value):
             env_block = env_mat[inner_y+1:, :]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
             weight = weight + find_block[0].size * Weight.GATE.value
-            if(is_hit_wall_or_wisdom_man or not self.is_wisdom_man):
+            if(is_hit_wall_or_man or not self.is_wisdom_man):
                 find_block = np.where(env_block == Block.EMPTY_NEAR_GATE.value)
                 weight = weight + find_block[0].size * Weight.EMPTY_NEAR_GATE.value
             find_block = np.where(env_block == Block.MAN.value)
@@ -183,16 +193,21 @@ class People(object):
             weights.append(weight/2)
         else:
             weights.append(0)
-            is_hit_wall_or_wisdom_man = True
+            is_hit_wall_or_man = True
 
         # man go Left
         if(env_mat[inner_y, inner_x-1] != Block.WALL.value and
-           env_mat[inner_y, inner_x-1] != Block.WISDOM_MAN.value):
+           env_mat[inner_y, inner_x-1] != Block.DIRECTION_DOWN.value and
+           env_mat[inner_y, inner_x-1] != Block.DIRECTION_LEFT.value and
+           env_mat[inner_y, inner_x-1] != Block.DIRECTION_RIGHT.value and
+           env_mat[inner_y, inner_x-1] != Block.DIRECTION_UP.value and
+           env_mat[inner_y, inner_x-1] != Block.WISDOM_MAN.value and
+           env_mat[inner_y, inner_x-1] != Block.MAN.value):
             env_block = env_mat[:, 0:inner_x]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
             weight = weight + find_block[0].size * Weight.GATE.value
-            if(is_hit_wall_or_wisdom_man or not self.is_wisdom_man):
+            if(is_hit_wall_or_man or not self.is_wisdom_man):
                 find_block = np.where(env_block == Block.EMPTY_NEAR_GATE.value)
                 weight = weight + find_block[0].size * Weight.EMPTY_NEAR_GATE.value
             find_block = np.where(env_block == Block.MAN.value)
@@ -203,16 +218,21 @@ class People(object):
             weights.append(weight/2)
         else:
             weights.append(0)
-            is_hit_wall_or_wisdom_man = True
+            is_hit_wall_or_man = True
 
         # man go Right
         if(env_mat[inner_y, inner_x+1] != Block.WALL.value and
-           env_mat[inner_y, inner_x+1] != Block.WISDOM_MAN.value):
+           env_mat[inner_y, inner_x+1] != Block.DIRECTION_DOWN.value and
+           env_mat[inner_y, inner_x+1] != Block.DIRECTION_LEFT.value and
+           env_mat[inner_y, inner_x+1] != Block.DIRECTION_RIGHT.value and
+           env_mat[inner_y, inner_x+1] != Block.DIRECTION_UP.value and
+           env_mat[inner_y, inner_x+1] != Block.WISDOM_MAN.value and
+           env_mat[inner_y, inner_x+1] != Block.MAN.value):
             env_block = env_mat[:, inner_x+1:]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
             weight = weight + find_block[0].size * Weight.GATE.value
-            if(is_hit_wall_or_wisdom_man or not self.is_wisdom_man):
+            if(is_hit_wall_or_man or not self.is_wisdom_man):
                 find_block = np.where(env_block == Block.EMPTY_NEAR_GATE.value)
                 weight = weight + find_block[0].size * Weight.EMPTY_NEAR_GATE.value
             find_block = np.where(env_block == Block.MAN.value)
@@ -223,16 +243,21 @@ class People(object):
             weights.append(weight/2)
         else:
             weights.append(0)
-            is_hit_wall_or_wisdom_man = True
+            is_hit_wall_or_man = True
 
         # man go UP_LEFT
         if(env_mat[inner_y-1, inner_x-1] != Block.WALL.value and
-           env_mat[inner_y-1, inner_x-1] != Block.WISDOM_MAN.value):
+           env_mat[inner_y-1, inner_x-1] != Block.DIRECTION_DOWN.value and
+           env_mat[inner_y-1, inner_x-1] != Block.DIRECTION_LEFT.value and
+           env_mat[inner_y-1, inner_x-1] != Block.DIRECTION_RIGHT.value and
+           env_mat[inner_y-1, inner_x-1] != Block.DIRECTION_UP.value and
+           env_mat[inner_y-1, inner_x-1] != Block.WISDOM_MAN.value and
+           env_mat[inner_y-1, inner_x-1] != Block.MAN.value):
             env_block = env_mat[0:inner_y, 0:inner_x]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
             weight = weight + find_block[0].size * Weight.GATE.value
-            if(is_hit_wall_or_wisdom_man or not self.is_wisdom_man):
+            if(is_hit_wall_or_man or not self.is_wisdom_man):
                 find_block = np.where(env_block == Block.EMPTY_NEAR_GATE.value)
                 weight = weight + find_block[0].size * Weight.EMPTY_NEAR_GATE.value
             find_block = np.where(env_block == Block.MAN.value)
@@ -243,16 +268,21 @@ class People(object):
             weights.append(weight)
         else:
             weights.append(0)
-            is_hit_wall_or_wisdom_man = True
+            is_hit_wall_or_man = True
 
         # man go UP_RIGHT
         if(env_mat[inner_y-1, inner_x+1] != Block.WALL.value and
-           env_mat[inner_y-1, inner_x+1] != Block.WISDOM_MAN.value):
+           env_mat[inner_y-1, inner_x+1] != Block.DIRECTION_DOWN.value and
+           env_mat[inner_y-1, inner_x+1] != Block.DIRECTION_LEFT.value and
+           env_mat[inner_y-1, inner_x+1] != Block.DIRECTION_RIGHT.value and
+           env_mat[inner_y-1, inner_x+1] != Block.DIRECTION_UP.value and
+           env_mat[inner_y-1, inner_x+1] != Block.WISDOM_MAN.value and
+           env_mat[inner_y-1, inner_x+1] != Block.MAN.value):
             env_block = env_mat[0:inner_y, inner_x+1:]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
             weight = weight + find_block[0].size * Weight.GATE.value
-            if(is_hit_wall_or_wisdom_man or not self.is_wisdom_man):
+            if(is_hit_wall_or_man or not self.is_wisdom_man):
                 find_block = np.where(env_block == Block.EMPTY_NEAR_GATE.value)
                 weight = weight + find_block[0].size * Weight.EMPTY_NEAR_GATE.value
             find_block = np.where(env_block == Block.MAN.value)
@@ -263,16 +293,21 @@ class People(object):
             weights.append(weight)
         else:
             weights.append(0)
-            is_hit_wall_or_wisdom_man = True
+            is_hit_wall_or_man = True
 
         # man go DOWN_LEFT
         if(env_mat[inner_y+1, inner_x-1] != Block.WALL.value and
-           env_mat[inner_y+1, inner_x-1] != Block.WISDOM_MAN.value):
+           env_mat[inner_y+1, inner_x-1] != Block.DIRECTION_DOWN.value and
+           env_mat[inner_y+1, inner_x-1] != Block.DIRECTION_LEFT.value and
+           env_mat[inner_y+1, inner_x-1] != Block.DIRECTION_RIGHT.value and
+           env_mat[inner_y+1, inner_x-1] != Block.DIRECTION_UP.value and
+           env_mat[inner_y+1, inner_x-1] != Block.WISDOM_MAN.value and
+           env_mat[inner_y+1, inner_x-1] != Block.MAN.value):
             env_block = env_mat[inner_y+1:, 0:inner_x]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
             weight = weight + find_block[0].size * Weight.GATE.value
-            if(is_hit_wall_or_wisdom_man or not self.is_wisdom_man):
+            if(is_hit_wall_or_man or not self.is_wisdom_man):
                 find_block = np.where(env_block == Block.EMPTY_NEAR_GATE.value)
                 weight = weight + find_block[0].size * Weight.EMPTY_NEAR_GATE.value
             find_block = np.where(env_block == Block.MAN.value)
@@ -283,16 +318,21 @@ class People(object):
             weights.append(weight)
         else:
             weights.append(0)
-            is_hit_wall_or_wisdom_man = True
+            is_hit_wall_or_man = True
 
         # man go DOWN_RIGHT
         if(env_mat[inner_y+1, inner_x+1] != Block.WALL.value and
-           env_mat[inner_y+1, inner_x+1] != Block.WISDOM_MAN.value):
+           env_mat[inner_y+1, inner_x+1] != Block.DIRECTION_DOWN.value and
+           env_mat[inner_y+1, inner_x+1] != Block.DIRECTION_LEFT.value and
+           env_mat[inner_y+1, inner_x+1] != Block.DIRECTION_RIGHT.value and
+           env_mat[inner_y+1, inner_x+1] != Block.DIRECTION_UP.value and
+           env_mat[inner_y+1, inner_x+1] != Block.WISDOM_MAN.value and
+           env_mat[inner_y+1, inner_x+1] != Block.MAN.value):
             env_block = env_mat[inner_y+1:, inner_x+1:]
             weight = 0
             find_block = np.where(env_block == Block.GATE.value)
             weight = weight + find_block[0].size * Weight.GATE.value
-            if(is_hit_wall_or_wisdom_man or not self.is_wisdom_man):
+            if(is_hit_wall_or_man or not self.is_wisdom_man):
                 find_block = np.where(env_block == Block.EMPTY_NEAR_GATE.value)
                 weight = weight + find_block[0].size * Weight.EMPTY_NEAR_GATE.value
             find_block = np.where(env_block == Block.MAN.value)
@@ -303,14 +343,34 @@ class People(object):
             weights.append(weight)
         else:
             weights.append(0)  # 绝不撞人
-            is_hit_wall_or_wisdom_man = True
-        # 权值计算完毕
+            is_hit_wall_or_man = True
+        # 权值计算完毕----------------------------------------------------------------
+        # 愚者跟随指示牌
+        if(not self.is_wisdom_man):
+            index = d_list.index(Direction.UP)
+            find_block = np.where(env_mat == Block.DIRECTION_UP.value)
+            weights[index] = (weights[index] +
+                              find_block[0].size * Weight.DIRECTION_UP.value)
+            index = d_list.index(Direction.DOWN)
+            find_block = np.where(env_mat == Block.DIRECTION_DOWN.value)
+            weights[index] = (weights[index] +
+                              find_block[0].size * Weight.DIRECTION_DOWN.value)
+            index = d_list.index(Direction.LEFT)
+            find_block = np.where(env_mat == Block.DIRECTION_LEFT.value)
+            weights[index] = (weights[index] +
+                              find_block[0].size * Weight.DIRECTION_LEFT.value)
+            index = d_list.index(Direction.RIGHT)
+            find_block = np.where(env_mat == Block.DIRECTION_RIGHT.value)
+            weights[index] = (weights[index] +
+                              find_block[0].size * Weight.DIRECTION_RIGHT.value)
         # 倾向于向同一个方向
-        if(self.current_direction is not None and not is_hit_wall_or_wisdom_man):
+        if(self.current_direction is not None and not is_hit_wall_or_man):
             index = d_list.index(self.current_direction)
             weights[index] = weights[index] + Weight.SAME_DIRECTION.value
+        # 绝不回头
         if(self.current_direction is not None):
             index = d_list.index(find_op(self.current_direction))
-            weights[index] = 0  # 绝不回头
+            weights[index] = 0
+        # 根据概率产生方向
         go_direction = weight_choice(weights)
         self.move(go_direction)
