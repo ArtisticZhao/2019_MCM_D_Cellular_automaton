@@ -2,7 +2,7 @@
 
 from enum import Enum, unique
 
-VISION_SIZE = 20
+VISION_SIZE = 10
 GATE_AREA = 20  # 请等于上一个值
 IS_SHOW = True
 # IS_SHOW = False
