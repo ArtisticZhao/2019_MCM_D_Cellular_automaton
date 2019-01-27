@@ -178,7 +178,7 @@ class Map(object):
                         continue
                     else:
                         break
-        self.gate_log.show_log()
+        self.gate_log.show_log(self.map)
         return time
 
     def draw_map(self):
@@ -202,9 +202,12 @@ class Gate_log(object):
     def add_log(self, y, x):
         self.gates[(y, x)] = self.gates[(y, x)] + 1
 
-    def show_log(self):
+    def show_log(self, env_mat):
+        shape = env_mat.shape
+        new_mat = np.zeros(shape)
         for k, v in self.gates.items():
-            print(str(k) + ' ' + str(v))
+            new_mat[k[0], k[1]] = v
+        np.savetxt('log.csv', new_mat, delimiter=',')
 
 
 if __name__ == '__main__':
