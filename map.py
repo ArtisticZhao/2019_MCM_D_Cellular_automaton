@@ -30,6 +30,8 @@ class Map(object):
         # 人员列表
         self.mans = list()
         self.total_man = 0
+        # 大门记录
+        self.gate_log = Gate_log()
 
     # def __init__(self, n, gate, offset):
     #     if(IS_SHOW):
@@ -67,6 +69,7 @@ class Map(object):
         res = np.where(self.map == Block.GATE.value)
         gates = list(zip(res[0], res[1]))  # y, X
         for gate in gates:
+            self.gate_log.add_gate(gate[0], gate[1])
             man_in_gate = People(gate[1], gate[0], 0)
             envs = self.get_env(GATE_AREA, man_in_gate)
             envs[0][envs[0] == 0] = Block.EMPTY_NEAR_GATE.value
@@ -138,7 +141,7 @@ class Map(object):
             inner_x = man.x
         if(y1 == 0):
             inner_y = man.y
-        return self.map[y1:y3, x1:x3], inner_x, inner_y
+        return self.map[y1:y3+1, x1:x3+1], inner_x, inner_y
 
     def everybody_move(self, is_pause):
         time = 0
@@ -149,6 +152,7 @@ class Map(object):
             for man in self.mans:
                 if (man.y, man.x) in gates:
                     # 成功逃脱
+                    self.gate_log.add_log(man.y, man.x)
                     self.mans.remove(man)
                     continue
                 envs = self.get_env(VISION_SIZE, man)
@@ -165,7 +169,7 @@ class Map(object):
                 print("当前时间:" + str(time) + " 剩余人数: " + str(len(self.mans)))
             # 残忍的抛下1%的人
             if(len(self.mans) < self.total_man * 0.01):
-                print("当前时间:" + str(time + 5) + " 剩余人数: 0")
+                print("当前时间:" + str(time) + " 剩余人数: 0")
                 break
             if(is_pause):
                 if(time % 20 == 0):
@@ -174,6 +178,7 @@ class Map(object):
                         continue
                     else:
                         break
+        self.gate_log.show_log()
         return time
 
     def draw_map(self):
@@ -187,9 +192,19 @@ class Map(object):
         plt.pause(0.001)
 
 
-class Gate(object):
+class Gate_log(object):
     def __init__(self):
-        pass
+        self.gates = dict()
+
+    def add_gate(self, y, x):
+        self.gates[(y, x)] = 0
+
+    def add_log(self, y, x):
+        self.gates[(y, x)] = self.gates[(y, x)] + 1
+
+    def show_log(self):
+        for k, v in self.gates.items():
+            print(str(k) + ' ' + str(v))
 
 
 if __name__ == '__main__':

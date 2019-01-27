@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 def run_manul(file_name, stop):
     m = Map(20, 3)
     m.load_map(file_name)
-    m.gen_people_by_density(0.4)
+    m.gen_people_by_density(0.2)
     m.check_map()
     m.draw_map()
     input(':')
@@ -65,7 +65,7 @@ def test_room_size():
 
 if __name__ == '__main__':
     # test_gate_pos()
-    run_manul('maps/l0_2.csv', True)
+    run_manul('maps/l0_3.csv', True)
     # test_door()
     # test_room_size()
     # m = Map(20, 3)
