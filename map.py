@@ -85,7 +85,7 @@ class Map(object):
         for gate in gates:
             num = input(str(gate[0]) + " " + str(gate[1]) + ": ")
             g_o = Gate_People_Out(gate[0], gate[1], int(num))
-            env = self.get_env(1, g_o)
+            env = self.get_env(4, g_o)
             g_o.set_env(env[0])
             self.gate_man_out.append(g_o)
         self.draw_map()
@@ -159,6 +159,9 @@ class Map(object):
         return self.map[y1:y3+1, x1:x3+1], inner_x, inner_y
 
     def everybody_move(self, is_pause):
+        for g_o in self.gate_man_out:
+            self.total_man = self.total_man + g_o.num_man_indoor
+
         time = 0
         res = np.where(self.map == Block.GATE.value)
         gates = list(zip(res[0], res[1]))  # y, X
@@ -183,7 +186,9 @@ class Map(object):
             self.sort_all()
             self.draw_map()  # 刷新地图
             if(IS_SHOW):
-                print("当前时间:" + str(time) + " 剩余人数: " + str(len(self.mans)))
+                print("当前时间:" + str(time) + " 地图内人数: " + str(len(self.mans)))
+                print("当前时间:" + str(time) + " 剩余人数: " +
+                      str(self.total_man - self.gate_log.get_sum()))
             # 残忍的抛下1%的人
             if(len(self.mans) < self.total_man * 0.02):
                 print("当前时间:" + str(time) + " 剩余人数: 0")
@@ -250,12 +255,15 @@ class Gate_log(object):
             new_mat[k[0], k[1]] = v
         np.savetxt('log.csv', new_mat, delimiter=',')
 
+    def get_sum(self):
+        return sum(self.gates.values())
+
 
 class Gate_People_Out(object):
     def __init__(self, y, x, num):
         self.y = y
         self.x = x
-        self.speed = 2
+        self.speed = 5
         self.env = None
         self.num_man_indoor = num
 
@@ -274,6 +282,7 @@ class Gate_People_Out(object):
                 self.num_man_indoor = self.num_man_indoor - num
             else:
                 num = self.num_man_indoor
+                self.num_man_indoor = self.num_man_indoor - num
             gen_man = random.sample(empty_can_stop_man, num)
             for man in gen_man:
                 self.env[man] = Block.MAN_NEW.value  # 在地图上标识

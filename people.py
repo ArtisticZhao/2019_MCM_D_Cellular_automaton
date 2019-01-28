@@ -19,7 +19,7 @@ class People(object):
         self.env = None
         self.distance_to_gate = distance
         self.current_direction = None
-        self.speed = 1
+        self.speed = 2
         self.is_wisdom_man = False
 
     def move(self, direction):
