@@ -83,7 +83,8 @@ class Map(object):
         res = np.where(self.map == Block.GATE_MAN_OUT.value)
         gates = list(zip(res[0], res[1]))  # y, X
         for gate in gates:
-            g_o = Gate_People_Out(gate[0], gate[1])
+            num = input(str(gate[0]) + " " + str(gate[1]) + ": ")
+            g_o = Gate_People_Out(gate[0], gate[1], int(num))
             env = self.get_env(1, g_o)
             g_o.set_env(env[0])
             self.gate_man_out.append(g_o)
@@ -251,12 +252,12 @@ class Gate_log(object):
 
 
 class Gate_People_Out(object):
-    def __init__(self, y, x):
+    def __init__(self, y, x, num):
         self.y = y
         self.x = x
         self.speed = 2
         self.env = None
-        self.num_man_indoor = 100
+        self.num_man_indoor = num
 
     def set_env(self, env):
         self.env = env

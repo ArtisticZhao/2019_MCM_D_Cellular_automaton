@@ -2,8 +2,8 @@
 
 from enum import Enum, unique
 
-VISION_SIZE = 10
-GATE_AREA = 20  # 请等于上一个值
+VISION_SIZE = 20
+GATE_AREA = 50  # 请等于上一个值
 IS_SHOW = True
 # IS_SHOW = False
 
@@ -20,7 +20,7 @@ class Block(Enum):
     MAN_NEW = 22          # 新人类
     WISDOM_MAN = 21       # 真-智叟
     GATE = 30             # 门
-    GATE_MAN_OUT = 40     # 传送门
+    GATE_MAN_OUT = 31     # 传送门
     DIRECTION_UP = 2      # 方向指示牌
     DIRECTION_DOWN = 3    # 方向指示牌
     DIRECTION_LEFT = 4    # 方向指示牌
@@ -49,8 +49,8 @@ class Weight(Enum):
     WISDOM_MAN = 20
     GATE = 2000             # 门
     EMPTY_NEAR_GATE = 20    # 近门空白区域
-    DIRECTION_UP = 1000     # 方向指示牌
-    DIRECTION_DOWN = 1000   # 方向指示牌
-    DIRECTION_LEFT = 1100   # 方向指示牌
-    DIRECTION_RIGHT = 900  # 方向指示牌
-    SAME_DIRECTION = 10000
+    DIRECTION_UP = 10     # 方向指示牌
+    DIRECTION_DOWN = 10   # 方向指示牌
+    DIRECTION_LEFT = 20   # 方向指示牌
+    DIRECTION_RIGHT = 0  # 方向指示牌
+    SAME_DIRECTION = 1000
