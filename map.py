@@ -32,6 +32,8 @@ class Map(object):
         self.total_man = 0
         # 大门记录
         self.gate_log = Gate_log()
+        # 传送门
+        self.gate_man_out = list()
 
     # def __init__(self, n, gate, offset):
     #     if(IS_SHOW):
@@ -73,6 +75,15 @@ class Map(object):
             man_in_gate = People(gate[1], gate[0], 0)
             envs = self.get_env(GATE_AREA, man_in_gate)
             envs[0][envs[0] == 0] = Block.EMPTY_NEAR_GATE.value
+
+        # 找到地图中的传送门
+        res = np.where(self.map == Block.GATE_MAN_OUT.value)
+        gates = list(zip(res[0], res[1]))  # y, X
+        for gate in gates:
+            g_o = Gate_People_Out(gate[0], gate[1])
+            env = self.get_env(1, g_o)
+            g_o.set_env(env[0])
+            self.gate_man_out.append(g_o)
         self.draw_map()
 
     def gen_people(self, num):
@@ -163,6 +174,7 @@ class Map(object):
                     print(envs[2], envs[1])
 
                 man.policy(envs[0], envs[1], envs[2])
+            self.fresh_man()
             self.sort_all()
             self.draw_map()  # 刷新地图
             if(IS_SHOW):
@@ -176,6 +188,18 @@ class Map(object):
                     plt.savefig(str(time) + ".png")  # 保存图片
         self.gate_log.show_log(self.map)
         return time
+
+    def fresh_man(self):
+        for g_o in self.gate_man_out:
+            g_o.fresh_people()
+            self.put_man_in_map()
+
+    def put_man_in_map(self):
+        find_new_block = np.where(self.map == Block.MAN_NEW.value)
+        man_news = list(zip(find_new_block[0], find_new_block[1]))  # y, X
+        for man in man_news:
+            self.mans.append(People(man[1], man[0], 10))
+            self.map[man] = Block.MAN.value
 
     def draw_map(self):
         if(not IS_SHOW):
@@ -204,6 +228,34 @@ class Gate_log(object):
         for k, v in self.gates.items():
             new_mat[k[0], k[1]] = v
         np.savetxt('log.csv', new_mat, delimiter=',')
+
+
+class Gate_People_Out(object):
+    def __init__(self, y, x):
+        self.y = y
+        self.x = x
+        self.speed = 2
+        self.env = None
+        self.num_man_indoor = 100
+
+    def set_env(self, env):
+        self.env = env
+
+    def fresh_people(self):
+        if(self.num_man_indoor > 0):
+            find_empty = np.where((self.env == Block.EMPTY.value) |
+                                  (self.env == Block.EMPTY_NEAR_GATE.value))
+            empty_can_stop_man = list(zip(find_empty[0], find_empty[1]))  # y, x
+            #  随机抽取空位加入到地图中
+            num = self.speed if self.speed < len(empty_can_stop_man) else len(
+                empty_can_stop_man)
+            if self.num_man_indoor >= num:
+                self.num_man_indoor = self.num_man_indoor - num
+            else:
+                num = self.num_man_indoor
+            gen_man = random.sample(empty_can_stop_man, num)
+            for man in gen_man:
+                self.env[man] = Block.MAN_NEW.value  # 在地图上标识
 
 
 if __name__ == '__main__':

@@ -17,12 +17,14 @@ class Block(Enum):
     EMPTY_NEAR_GATE = 1   # 人们更乐于趋向的位置
     WALL = 10             # 障碍物
     MAN = 20              # 人
+    MAN_NEW = 22          # 新人类
     WISDOM_MAN = 21       # 真-智叟
     GATE = 30             # 门
-    DIRECTION_UP = 2     # 方向指示牌
-    DIRECTION_DOWN = 3   # 方向指示牌
-    DIRECTION_LEFT = 4   # 方向指示牌
-    DIRECTION_RIGHT = 5  # 方向指示牌
+    GATE_MAN_OUT = 40     # 传送门
+    DIRECTION_UP = 2      # 方向指示牌
+    DIRECTION_DOWN = 3    # 方向指示牌
+    DIRECTION_LEFT = 4    # 方向指示牌
+    DIRECTION_RIGHT = 5   # 方向指示牌
 
 
 @unique
