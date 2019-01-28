@@ -34,6 +34,8 @@ class Map(object):
         self.gate_log = Gate_log()
         # 传送门
         self.gate_man_out = list()
+        # 绘制热图
+        self.hot_map = None
 
     # def __init__(self, n, gate, offset):
     #     if(IS_SHOW):
@@ -65,6 +67,7 @@ class Map(object):
             for row in f_csv:
                 row = np.array(list(map(int, row)))
                 self.map = np.vstack((self.map, row))
+        self.hot_map = np.zeros(self.map.shape)  # c初始化热图
 
     def check_map(self):
         # 用于把门周围的地面变成人们更趋近的区域
@@ -160,6 +163,7 @@ class Map(object):
         gates = list(zip(res[0], res[1]))  # y, X
         while(self.mans):
             time = time + 1
+            self.gen_hot_map()
             for man in self.mans:
                 if (man.y, man.x) in gates:
                     # 成功逃脱
@@ -186,6 +190,7 @@ class Map(object):
             if(is_pause):
                 if(time % 20 == 0):
                     plt.savefig(str(time) + ".png")  # 保存图片
+        self.save_hot_map()
         self.gate_log.show_log(self.map)
         return time
 
@@ -200,6 +205,21 @@ class Map(object):
         for man in man_news:
             self.mans.append(People(man[1], man[0], 10))
             self.map[man] = Block.MAN.value
+
+    def gen_hot_map(self):
+        new_mat = np.where(
+            (self.map == Block.MAN.value) | (self.map == Block.WISDOM_MAN.value), 1, 0)
+        self.hot_map = self.hot_map + new_mat
+
+    def save_hot_map(self):
+        # 清除原有图像
+        self.fig.clf()
+        ax = self.fig.add_subplot(111)
+        ax.imshow(self.hot_map)
+        np.savetxt('hotmap.csv', self.hot_map, delimiter=',')
+        plt.draw()
+        plt.pause(0.001)
+        plt.savefig("hot_map.png")  # 保存图片
 
     def draw_map(self):
         if(not IS_SHOW):
